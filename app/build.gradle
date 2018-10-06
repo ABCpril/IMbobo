@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -19,10 +20,24 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    //implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation('com.android.support:appcompat-v7:28.0.0') {
+        exclude module: 'support-v4'
+//           extraztProguardFiles 'com.android.support:support-v4:28.0.0'
+//        exclude module: 'com.android.support:support-v4:28.0.0'
+    }
+    /** 解决报错
+     * Program type already present: android.support.v4.app.BackStackRecord$Op
+     * 已存在的程序类型：android.Support.v4.app.BackStackRecord$Op
+     */
+    //implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //implementation project(':hyphenatechatsdk')
+    //implementation project(':easeui')
+    //implementation project(':easeui')
+    implementation project(':easeui')
 }
