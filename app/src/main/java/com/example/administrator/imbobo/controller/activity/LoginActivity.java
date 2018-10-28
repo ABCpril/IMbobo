@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -72,8 +73,8 @@ public class LoginActivity extends Activity {
 
 
         //2校验输入的用户名和密码
-        if (TestRegUtils.testTelephone(loginName,LoginActivity.this) && TestRegUtils.testPwd(loginPwd,
-                LoginActivity.this)) {
+        if (TestRegUtils.testTelephone(loginName,LoginActivity.this) && TestRegUtils.
+                testPwd(loginPwd, LoginActivity.this)) {
 
             //3登陆逻辑的处理
             Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
@@ -118,7 +119,10 @@ public class LoginActivity extends Activity {
                                         Toast.makeText(LoginActivity.this,"用户不存在",Toast.LENGTH_SHORT).show();
                                     }else if(s.equals("Username or password is wrong")) {
                                         Toast.makeText(LoginActivity.this,"密码不正确",Toast.LENGTH_SHORT).show();
+                                    }else if (s.equals("Network isn't avaliable")){
+                                        Toast.makeText(LoginActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
                                     }else {
+                                        Log.e("登陆失败:",s);
                                         Toast.makeText(LoginActivity.this,"登陆失败"+s,Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -172,6 +176,8 @@ public class LoginActivity extends Activity {
                             public void run() {
                                 if (e.toString().equals("com.hyphenate.exceptions.HyphenateException: User already exist")){
                                     Toast.makeText(LoginActivity.this,"该账号已注册",Toast.LENGTH_SHORT).show();
+                                }else if (e.toString().equals("com.hyphenate.exceptions.HyphenateException: Registration failed.")){
+                                    Toast.makeText(LoginActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
                                 }else {
                                     Toast.makeText(LoginActivity.this,"注册失败",Toast.LENGTH_SHORT).show();
                                 }
@@ -190,6 +196,8 @@ public class LoginActivity extends Activity {
     private void initView() {
         et_login_name = (EditText) findViewById(R.id.et_login_name);
         et_login_pwd = (EditText) findViewById(R.id.et_login_pwd);
+        //设置密码暗文显示
+        et_login_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
         bt_login_regist = (Button) findViewById(R.id.bt_login_regist);
         bt_login_login = (Button) findViewById(R.id.bt_login_login);
     }

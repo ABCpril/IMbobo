@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F5F5F5"
+    android:orientation="vertical">
+    <com.hyphenate.easeui.widget.EaseTitleBar
+        app:titleBarTitle="设置"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--android:background="@android:color/holo_red_light"-->
+    <Button
+        android:id="@+id/bt_setting_out"
+        android:text="退出登陆"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@drawable/out"
+        android:paddingLeft="20dp"
+        android:background="@drawable/setting_fragment_bg_selector"
+        android:layout_height="60dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <!--android:gravity="center"  layout_gravity="center" 是不一样的-->
+        <TextView
+            android:text="Settings"
+            android:layout_weight="0"
+            android:textSize="30sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+</LinearLayout>

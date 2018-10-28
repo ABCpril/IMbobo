@@ -16,9 +16,9 @@ public class IMApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-
         //初始化EaseUI
         EMOptions options = new EMOptions();
+
         //设置需要同意后才能接受好友邀请
         options.setAcceptInvitationAlways(false);
         //需要用户同意之后才能接受群邀请

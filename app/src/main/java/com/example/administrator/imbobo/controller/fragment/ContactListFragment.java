@@ -7,4 +7,6 @@ import android.support.v4.app.Fragment;
  * Functions: 联系人列表页面
  */
 public class ContactListFragment extends Fragment {
+
+    //19
 }
