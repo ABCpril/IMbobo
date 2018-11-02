@@ -70,7 +70,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.activity.LoginActivity"></activity>
+        <activity android:name=".controller.activity.LoginActivity" />
+        <activity android:name=".controller.activity.AddContactActivity"></activity>
     </application>
 
 </manifest>
