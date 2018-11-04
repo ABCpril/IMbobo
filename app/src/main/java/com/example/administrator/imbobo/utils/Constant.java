@@ -11,4 +11,5 @@ public class Constant {
 
     /**联系人邀请信息变化的广播*/
     public static final String CONTACT_INVITE_CHANGED = "contact_invite_changed";
+
 }

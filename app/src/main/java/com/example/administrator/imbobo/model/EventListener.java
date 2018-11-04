@@ -13,7 +13,7 @@ import com.example.administrator.imbobo.utils.Constant;
 
 /**
  * Created by Leon on 2018/11/4.
- * Functions: 全局事件监听类
+ * Functions: 全局事件监听类- 广播在这里创建和发送
  */
 public class EventListener {
 

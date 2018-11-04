@@ -13,7 +13,8 @@
     <ListView
         android:id="@+id/iv_invite"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:divider="#CCCCCC"
+        android:dividerHeight="0.5dp"></ListView>
 
 </LinearLayout>
