@@ -32,6 +32,7 @@ public class InviteActivity extends Activity {
     private InviteAdapter inviteAdapter;
     private LocalBroadcastManager mLBM;
 
+
     private InviteAdapter.OnInviteListener mOnInviteListener = new InviteAdapter.OnInviteListener() {
         @Override
         public void onAccept(final InvationInfo invationInfo) {//同意添加为好友
@@ -105,8 +106,6 @@ public class InviteActivity extends Activity {
                     }
                 }
             });
-
-
         }
     };
 
@@ -158,6 +157,13 @@ public class InviteActivity extends Activity {
         //注册了广播一定要记得关闭
         mLBM.unregisterReceiver(receiver);
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //发送刚刚返出InviteActivity 红点不要再显示了的广播
+        mLBM.sendBroadcast(new Intent(Constant.LEONBROADCAST));
     }
 }
 

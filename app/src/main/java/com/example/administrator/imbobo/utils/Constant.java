@@ -12,4 +12,7 @@ public class Constant {
     /**联系人邀请信息变化的广播*/
     public static final String CONTACT_INVITE_CHANGED = "contact_invite_changed";
 
+    /**刚刚返出InviteActivity 红点不要再显示了*/
+    public static final String LEONBROADCAST = "leonbroadcast";
+
 }

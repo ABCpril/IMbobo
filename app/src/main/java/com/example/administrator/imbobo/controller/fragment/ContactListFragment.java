@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,16 @@ public class ContactListFragment extends EaseContactListFragment {
             //更新红点显示
             iv_contact_red.setVisibility(View.VISIBLE);
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+        }
+    };
+
+    private BroadcastReceiver leReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //不要红点显示刚从InviteActivity（邀请信息列表）回来不要显示
+            iv_contact_red.setVisibility(View.GONE);
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,false);
         }
     };
 
@@ -92,6 +103,7 @@ public class ContactListFragment extends EaseContactListFragment {
         mLBM = LocalBroadcastManager.getInstance(getActivity());
         //ContactInviteChangeReceiver - receiver
         mLBM.registerReceiver(receiver,new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+        mLBM.registerReceiver(leReceiver,new IntentFilter(Constant.LEONBROADCAST));
     }
 
     @Override
@@ -99,7 +111,7 @@ public class ContactListFragment extends EaseContactListFragment {
 
         //注册的广播一定要关闭掉
         mLBM.unregisterReceiver(receiver);
-
+        mLBM.unregisterReceiver(leReceiver);
         super.onDestroy();
     }
 }
