@@ -87,7 +87,7 @@ public class LoginActivity extends Activity {
                         @Override
                         public void onSuccess() {
                             //对模型层数据的处理
-                            Model.getInstance().loginSussess();
+                            Model.getInstance().loginSussess(new UserInfo(loginName));
 
                             //保存用户账号信息到本地数据库
                             Model.getInstance().getUserAccountDao().addAccount(new UserInfo(loginName));

@@ -67,6 +67,10 @@ public class SettingFragment extends Fragment {
                         EMClient.getInstance().logout(false, new EMCallBack() {
                             @Override
                             public void onSuccess() {//退出成功-发现没有网络也能退出成功
+
+                                //关闭DBHelper
+                                Model.getInstance().getDbManager().close();
+
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

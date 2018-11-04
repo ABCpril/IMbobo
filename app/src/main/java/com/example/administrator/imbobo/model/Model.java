@@ -2,7 +2,9 @@ package com.example.administrator.imbobo.model;
 
 import android.content.Context;
 
+import com.example.administrator.imbobo.model.bean.UserInfo;
 import com.example.administrator.imbobo.model.dao.UserAccountDao;
+import com.example.administrator.imbobo.model.db.DBManager;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +20,9 @@ public class Model {
 
     //户账号数据库的操作类对象
     private UserAccountDao userAccountDao;
+
+    // 联系人和邀请信息表的操作类的管理类
+    private DBManager dbManager;
 
     //线程池
     private ExecutorService executors = Executors.newCachedThreadPool();
@@ -41,6 +46,9 @@ public class Model {
 
         //创建用户账号数据库的操作类对象
         userAccountDao = new UserAccountDao(context);
+
+        //开启全局监听
+        EventListener eventListener = new EventListener(mContext);
     }
 
     /**获取全局的线程池*/
@@ -49,8 +57,21 @@ public class Model {
     }
 
     /**用户登陆成功后的处理方法*/
-    public void loginSussess(){
+    public void loginSussess(UserInfo account){
 
+        //避免空指针异常
+        if (account == null){ return; }
+
+        if (dbManager != null){
+            dbManager.close();
+        }
+
+        dbManager = new DBManager(mContext,account.getName());
+    }
+
+    /**获取数据库的操作类对象*/
+    public DBManager getDbManager(){
+        return dbManager;
     }
 
     /**获取用户账号数据库的操作类对象*/
