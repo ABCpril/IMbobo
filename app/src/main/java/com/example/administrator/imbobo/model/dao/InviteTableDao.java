@@ -55,9 +55,9 @@ public class InviteTableDao {
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
         //2.执行查询语句 ↓可以正常使用
-        //String sql = "select * from "+InviteTable.TABLE_NAME;
+        String sql = "select * from "+InviteTable.TABLE_NAME;
         //2.执行查询语句 ↓倒序 根据后来添加的自增长id字段
-        String sql = "select * from "+InviteTable.TABLE_NAME + " order by id desc";
+        //String sql = "select * from "+InviteTable.TABLE_NAME + " order by id desc";
 
         Cursor cursor = db.rawQuery(sql,null);
 

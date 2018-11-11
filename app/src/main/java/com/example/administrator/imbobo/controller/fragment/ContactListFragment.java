@@ -19,11 +19,13 @@ import com.example.administrator.imbobo.model.bean.UserInfo;
 import com.example.administrator.imbobo.utils.Constant;
 import com.example.administrator.imbobo.utils.SpUtils;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.controller.activity.InviteActivity;
 import com.hyphenate.exceptions.HyphenateException;
+import com.example.administrator.imbobo.controller.activity.ChatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,6 +91,17 @@ public class ContactListFragment extends EaseContactListFragment {
         //获取邀请信息条目的点击事件
         ll_contact_invite = headerView.findViewById(R.id.ll_contact_invite);
 
+        //设置listview条目的点击事件easeUI中的方法 方法2：listView.setOnItemClickListener();
+        setContactListItemClickListener(new EaseContactListItemClickListener() {
+            @Override
+            public void onListItemClicked(EaseUser user) {
+                Intent intent = new Intent(getActivity(),ChatActivity.class);
+
+                //传递参数
+                intent.putExtra(EaseConstant.EXTRA_USER_ID,user.getUsername());
+                startActivity(intent);
+            }
+        });
     }
 
     //setUpView() 实现EaseContactListFragment中的抽象方法
