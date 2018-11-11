@@ -30,7 +30,9 @@ public class InviteTable {
     /**建表的语句-"create table "后面少了空格产生bug*/
     public static final String CREATE_TAB = "create table "
             + TABLE_NAME +" ("
-            + COL_USER_HXID +" text primary key,"
+            + "id int identity(1,1) primary key,"// 自增主键创建语法
+            //+ COL_USER_HXID +" text primary key,"
+            + COL_USER_HXID +" text,"
             + COL_USER_NAME +" text,"
             + COL_GROUP_HXID +" text,"
             + COL_GROUP_NAME +" text,"

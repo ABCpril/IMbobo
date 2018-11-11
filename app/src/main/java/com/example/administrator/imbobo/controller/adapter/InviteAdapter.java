@@ -2,6 +2,7 @@ package com.example.administrator.imbobo.controller.adapter;
 
 import android.content.Context;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -122,7 +123,15 @@ public class InviteAdapter extends BaseAdapter {
                 }else {
                     hodler.reason.setText(invationInfo.getReason());
                 }
+            }else if (invationInfo.getStatus() == InvationInfo.InvitationStatus.REFUSE_AN_INVITATION){
+                //邀请被接受
+                if (invationInfo.getReason() == null){
+                    hodler.reason.setText("邀请被拒绝");
+                }else {
+                    hodler.reason.setText(invationInfo.getReason());
+                }
             }
+            //-----------------------------leon----------------------------------
 
             //(同意)按钮点击事件的处理
             hodler.accept.setOnClickListener(new View.OnClickListener() {

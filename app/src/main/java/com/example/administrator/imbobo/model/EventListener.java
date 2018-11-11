@@ -3,6 +3,7 @@ package com.example.administrator.imbobo.model;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.example.administrator.imbobo.model.bean.InvationInfo;
 import com.example.administrator.imbobo.model.bean.UserInfo;
@@ -59,6 +60,7 @@ public class EventListener {
         //接收到联系人的新邀请（别人邀请你）
         @Override
         public void onContactInvited(String hxid, String reson) {
+
             //数据库更新
             InvationInfo invationInfo = new InvationInfo();
             //设置邀请人
@@ -94,7 +96,19 @@ public class EventListener {
 
         //别人拒绝了你的好友邀请
         @Override
-        public void onFriendRequestDeclined(String s) {
+        public void onFriendRequestDeclined(String hxid) {
+            //拒绝邀请的处理-Leon---------------------------------------
+            //数据库更新
+            InvationInfo invationInfo = new InvationInfo();
+            //设置拒绝原因
+            invationInfo.setReason("拒绝添加");
+            invationInfo.setUser(new UserInfo(hxid));
+            //别人拒绝你的邀请
+            invationInfo.setStatus(InvationInfo.InvitationStatus.REFUSE_AN_INVITATION);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+            //拒绝邀请的处理-Leon---------------------------------------
+
+
             //红点的处理
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
 

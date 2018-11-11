@@ -40,6 +40,9 @@ public class InvationInfo {
         /**邀请被接受*/
         INVITE_ACCEPT_BY_PEER,
 
+        /**好友邀请被拒绝---Leon------------------------*/
+        REFUSE_AN_INVITATION,
+
         //-----以下是群组邀请信息状态-----
 
         /**收到邀请去加入群组*/

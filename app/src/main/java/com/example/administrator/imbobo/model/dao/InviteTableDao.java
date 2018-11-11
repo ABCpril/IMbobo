@@ -54,8 +54,11 @@ public class InviteTableDao {
         //1.获取数据库连接
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
-        //2.执行查询语句
-        String sql = "select * from "+InviteTable.TABLE_NAME;
+        //2.执行查询语句 ↓可以正常使用
+        //String sql = "select * from "+InviteTable.TABLE_NAME;
+        //2.执行查询语句 ↓倒序 根据后来添加的自增长id字段
+        String sql = "select * from "+InviteTable.TABLE_NAME + " order by id desc";
+
         Cursor cursor = db.rawQuery(sql,null);
 
         List<InvationInfo> invationInfos = new ArrayList<>();
@@ -160,6 +163,11 @@ public class InviteTableDao {
         /**群申请被拒绝*/
         if (intStatus == InvationInfo.InvitationStatus.GROUP_APPLICATION_DECLINED.ordinal()){
             return InvationInfo.InvitationStatus.GROUP_APPLICATION_DECLINED;
+        }
+
+        /**Leon 别人拒绝了你的邀请*/
+        if (intStatus == InvationInfo.InvitationStatus.REFUSE_AN_INVITATION.ordinal()){
+            return InvationInfo.InvitationStatus.REFUSE_AN_INVITATION;
         }
 
         return null;
