@@ -26,6 +26,7 @@ import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.controller.activity.InviteActivity;
 import com.hyphenate.exceptions.HyphenateException;
 import com.example.administrator.imbobo.controller.activity.ChatActivity;
+import com.example.administrator.imbobo.controller.activity.GroupListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,10 +96,29 @@ public class ContactListFragment extends EaseContactListFragment {
         setContactListItemClickListener(new EaseContactListItemClickListener() {
             @Override
             public void onListItemClicked(EaseUser user) {
+
+                if (user == null){
+                    return;
+                }
+
                 Intent intent = new Intent(getActivity(),ChatActivity.class);
 
                 //传递参数
                 intent.putExtra(EaseConstant.EXTRA_USER_ID,user.getUsername());
+                startActivity(intent);
+            }
+        });
+
+        //跳转到群主列表页面
+        LinearLayout ll_contact_group = (LinearLayout)headerView.findViewById(R.id.ll_contact_group);
+        ll_contact_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),GroupListActivity.class);
+
+                //
+
+                //跳转到群组activity
                 startActivity(intent);
             }
         });
