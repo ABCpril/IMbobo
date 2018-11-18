@@ -9,8 +9,12 @@ import com.example.administrator.imbobo.model.bean.InvationInfo;
 import com.example.administrator.imbobo.model.bean.UserInfo;
 import com.example.administrator.imbobo.utils.SpUtils;
 import com.hyphenate.EMContactListener;
+import com.hyphenate.EMGroupChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.example.administrator.imbobo.utils.Constant;
+import com.hyphenate.chat.EMMucSharedFile;
+
+import java.util.List;
 
 /**
  * Created by Leon on 2018/11/4.
@@ -29,7 +33,107 @@ public class EventListener {
 
         //注册一个联系人变化的监听
         EMClient.getInstance().contactManager().setContactListener(emContactListener);
+
+        //注册一个群信息变化的监听
+        EMClient.getInstance().groupManager().addGroupChangeListener(emGroupChangeListener);
     }
+
+    private final EMGroupChangeListener emGroupChangeListener = new EMGroupChangeListener() {
+        @Override
+        public void onInvitationReceived(String s, String s1, String s2, String s3) {
+
+        }
+
+        @Override
+        public void onRequestToJoinReceived(String s, String s1, String s2, String s3) {
+
+        }
+
+        @Override
+        public void onRequestToJoinAccepted(String s, String s1, String s2) {
+
+        }
+
+        @Override
+        public void onRequestToJoinDeclined(String s, String s1, String s2, String s3) {
+
+        }
+
+        @Override
+        public void onInvitationAccepted(String s, String s1, String s2) {
+
+        }
+
+        @Override
+        public void onInvitationDeclined(String s, String s1, String s2) {
+
+        }
+
+        @Override
+        public void onUserRemoved(String s, String s1) {
+
+        }
+
+        @Override
+        public void onGroupDestroyed(String s, String s1) {
+
+        }
+
+        @Override
+        public void onAutoAcceptInvitationFromGroup(String s, String s1, String s2) {
+
+        }
+
+        @Override
+        public void onMuteListAdded(String s, List<String> list, long l) {
+
+        }
+
+        @Override
+        public void onMuteListRemoved(String s, List<String> list) {
+
+        }
+
+        @Override
+        public void onAdminAdded(String s, String s1) {
+
+        }
+
+        @Override
+        public void onAdminRemoved(String s, String s1) {
+
+        }
+
+        @Override
+        public void onOwnerChanged(String s, String s1, String s2) {
+
+        }
+
+        @Override
+        public void onMemberJoined(String s, String s1) {
+
+        }
+
+        @Override
+        public void onMemberExited(String s, String s1) {
+
+        }
+
+        @Override
+        public void onAnnouncementChanged(String s, String s1) {
+
+        }
+
+        @Override
+        public void onSharedFileAdded(String s, EMMucSharedFile emMucSharedFile) {
+
+        }
+
+        @Override
+        public void onSharedFileDeleted(String s, String s1) {
+
+        }
+    };
 
     /**联系人变化的监听*/
     private final EMContactListener emContactListener = new EMContactListener() {

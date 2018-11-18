@@ -116,8 +116,6 @@ public class ContactListFragment extends EaseContactListFragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),GroupListActivity.class);
 
-                //
-
                 //跳转到群组activity
                 startActivity(intent);
             }
