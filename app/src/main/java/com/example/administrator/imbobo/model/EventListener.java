@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.administrator.imbobo.model.bean.GroupInfo;
 import com.example.administrator.imbobo.model.bean.InvationInfo;
 import com.example.administrator.imbobo.model.bean.UserInfo;
 import com.example.administrator.imbobo.utils.SpUtils;
@@ -38,100 +39,206 @@ public class EventListener {
         EMClient.getInstance().groupManager().addGroupChangeListener(emGroupChangeListener);
     }
 
+    //群信息变化的监听
     private final EMGroupChangeListener emGroupChangeListener = new EMGroupChangeListener() {
-        @Override
-        public void onInvitationReceived(String s, String s1, String s2, String s3) {
 
+        //收到 群邀请
+        @Override
+        public void onInvitationReceived(String groupId, String groupName, String inviter, String reson) {
+
+            Log.e("leon","00001");
+            //数据更新
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setReason(reson);
+            invationInfo.setGroup(new GroupInfo(groupName,groupId,inviter));
+            invationInfo.setStatus(InvationInfo.InvitationStatus.NEW_GROUP_INVITE);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
+        //收到 群申请通知  收到的加入请求
         @Override
-        public void onRequestToJoinReceived(String s, String s1, String s2, String s3) {
+        public void onRequestToJoinReceived(String groupId, String groupName, String applicant, String reason) {
 
+            Log.e("leon","00002");
+            //数据更新
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setReason(reason);
+            invationInfo.setGroup(new GroupInfo(groupName,groupId,applicant));
+            invationInfo.setStatus(InvationInfo.InvitationStatus.NEW_GROUP_APPLICATION);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
+        //收到 群申请被接受  应要求加入接受
         @Override
-        public void onRequestToJoinAccepted(String s, String s1, String s2) {
+        public void onRequestToJoinAccepted(String groupId, String groupName, String accepter) {
 
+            Log.e("leon","00003");
+            //更新数据
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setGroup(new GroupInfo(groupName,groupId,accepter));
+            //invationInfo.setReason("群申请被接受");//Leon
+            invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_APPLICATION_ACCEPTED);
+
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
-        @Override
-        public void onRequestToJoinDeclined(String s, String s1, String s2, String s3) {
 
+        //应要求加入拒绝
+        @Override
+        public void onRequestToJoinDeclined(String groupId, String groupName, String decliner, String reason) {
+
+            Log.e("leon","00004");
+            //更新数据
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setReason(reason);
+            invationInfo.setGroup(new GroupInfo(groupName,groupId,decliner));
+            invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_APPLICATION_DECLINED);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
+        //收到 群邀请被同意
         @Override
-        public void onInvitationAccepted(String s, String s1, String s2) {
+        public void onInvitationAccepted(String groupId, String inviter, String reason) {
 
+            Log.e("leon","00065");
+            //更新数据
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setReason(reason);
+            invationInfo.setGroup(new GroupInfo(groupId,groupId,inviter));
+            invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_INVITE_ACCEPTED);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
-        @Override
-        public void onInvitationDeclined(String s, String s1, String s2) {
 
+        //收到 群邀请被拒绝
+        @Override
+        public void onInvitationDeclined(String groupId, String inviter, String reason) {
+
+            Log.e("leon","00085");
+            //更新数据
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setReason(reason);
+            invationInfo.setGroup(new GroupInfo(groupId,groupId,inviter));
+            invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_INVITE_DECLINED);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
+        //收到 群成员被删除
         @Override
-        public void onUserRemoved(String s, String s1) {
+        public void onUserRemoved(String groupId, String groupName) {
 
+            Log.e("leon","000089");
         }
 
+        //收到 群被解散
         @Override
         public void onGroupDestroyed(String s, String s1) {
-
+            Log.e("leon","00006");
         }
 
+        //收到 群邀请被自动接受
         @Override
-        public void onAutoAcceptInvitationFromGroup(String s, String s1, String s2) {
+        public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
+            Log.e("leon","00007");
+            //更新数据
+            InvationInfo invationInfo = new InvationInfo();
+            invationInfo.setReason(inviteMessage);
+            invationInfo.setGroup(new GroupInfo(groupId,groupId,inviter));
+            invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_INVITE_ACCEPTED);
+            Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
 
+            //红点处理
+            SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
+
+            //发送广播
+            mLBM.sendBroadcast(new Intent(Constant.GROUP_INVITE_CHANGED));
         }
 
         @Override
         public void onMuteListAdded(String s, List<String> list, long l) {
-
+            Log.e("leon","00008");
         }
 
         @Override
         public void onMuteListRemoved(String s, List<String> list) {
-
+            Log.e("leon","00009");
         }
 
         @Override
         public void onAdminAdded(String s, String s1) {
-
+            Log.e("leon","000010");
         }
 
         @Override
         public void onAdminRemoved(String s, String s1) {
-
+            Log.e("leon","000011");
         }
 
         @Override
         public void onOwnerChanged(String s, String s1, String s2) {
-
+            Log.e("leon","000012");
         }
 
+        //群成员加入
         @Override
         public void onMemberJoined(String s, String s1) {
-
+            Log.e("leon","000013");
         }
 
         @Override
         public void onMemberExited(String s, String s1) {
-
+            Log.e("leon","000014");
         }
 
         @Override
         public void onAnnouncementChanged(String s, String s1) {
-
+            Log.e("leon","000015");
         }
 
         @Override
         public void onSharedFileAdded(String s, EMMucSharedFile emMucSharedFile) {
-
+            Log.e("leon","000016");
         }
 
         @Override
         public void onSharedFileDeleted(String s, String s1) {
-
+            Log.e("leon","000017");
         }
     };
 

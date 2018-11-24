@@ -27,6 +27,9 @@ public class InviteTable {
     /**邀请的状态 integer*/
     public static final String COL_STATUS = "status";
 
+    /**邀请时间 long time=System.currentTimeMillis(); Leon新增加*/
+    public static final String CURRENTTIME = "currentTime";
+
     /**建表的语句-"create table "后面少了空格产生bug*/
     public static final String CREATE_TAB = "create table "
             + TABLE_NAME +" ("
@@ -37,6 +40,7 @@ public class InviteTable {
             + COL_GROUP_HXID +" text,"
             + COL_GROUP_NAME +" text,"
             + COL_REASON +" text,"
-            + COL_STATUS +" integer);";
+            + COL_STATUS +" integer,"// + COL_STATUS +" integer);" 改动前
+            + CURRENTTIME + " integer);";
 
 }

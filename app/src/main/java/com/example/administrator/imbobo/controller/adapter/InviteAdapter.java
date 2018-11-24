@@ -149,7 +149,92 @@ public class InviteAdapter extends BaseAdapter {
             });
 
         }else {//群组
+            //显示名称
+            hodler.name.setText(invationInfo.getGroup().getInvatePerson());
 
+            hodler.accept.setVisibility(View.GONE);
+            hodler.reject.setVisibility(View.GONE);
+
+            //显示原因
+            switch (invationInfo.getStatus()){
+                //您的群申请已经被接受
+                case GROUP_APPLICATION_ACCEPTED:
+                    hodler.reason.setText("您的群申请已经被接受");
+                    break;
+                //您的群邀请已经被接受   GROUP_INVITE_ACCEPTED
+                case GROUP_INVITE_ACCEPTED:
+                    //hodler.reason.setText("您的群邀请已经被接受");
+                    hodler.reason.setText("加入了新的群聊");
+                    break;
+                 //您的群申请已经被拒绝
+                case GROUP_APPLICATION_DECLINED:
+                    hodler.reason.setText("您的群申请已经被拒绝");
+                    break;
+                //您的群邀请已经被拒绝
+                case GROUP_INVITE_DECLINED:
+                    hodler.reason.setText("您的群邀请已经被拒绝 ");
+                    break;
+                //您收到了群邀请
+                case NEW_GROUP_INVITE:
+                    hodler.accept.setVisibility(View.VISIBLE);
+                    hodler.reject.setVisibility(View.VISIBLE);
+
+                    //接受邀请
+                    hodler.accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onInviteAccept(invationInfo);
+                        }
+                    });
+
+                    //拒绝邀请
+                    hodler.reject.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onInviteReject(invationInfo);
+                        }
+                    });
+
+                    hodler.reason.setText("您收到了群邀请");
+                    break;
+                //您收到了群申请
+                case NEW_GROUP_APPLICATION:
+                    hodler.accept.setVisibility(View.VISIBLE);
+                    hodler.reject.setVisibility(View.VISIBLE);
+
+                    //接受申请
+                    hodler.accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onApplicationAccept(invationInfo);
+                        }
+                    });
+
+                    //拒绝申请
+                    hodler.reject.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onApplicationReject(invationInfo);
+                        }
+                    });
+
+                    hodler.reason.setText("您收到了群申请");
+                    break;
+                //您接受了群邀请
+                case GROUP_ACCEPT_INVITE:
+                    hodler.reason.setText("您接受了群邀请");
+                    break;
+                //您批准了群加入
+                case GROUP_ACCEPT_APPLICATION:
+                    hodler.reason.setText("您批准了群加入");
+                    break;
+                case GROUP_REJECT_INVITE:
+                    hodler.reason.setText("您拒绝了群邀请");
+                    break;
+                case GROUP_REJECT_APPLICATION:
+                    hodler.reason.setText("您拒绝了群申请");
+                    break;
+            }
         }
 
         //返回View
@@ -171,5 +256,17 @@ public class InviteAdapter extends BaseAdapter {
 
         //联系人拒绝按钮的点击事件
         void onReject(InvationInfo invationInfo);
+
+        /**接受邀请按钮处理(群)*/
+        void onInviteAccept(InvationInfo invationInfo);
+
+        /**拒绝邀请按钮处理*/
+        void onInviteReject(InvationInfo invationInfo);
+
+        /**接受申请按钮处理*/
+        void  onApplicationAccept(InvationInfo invationInfo);
+
+        /**拒绝申请按钮处理*/
+        void onApplicationReject(InvationInfo invationInfo);
     }
 }

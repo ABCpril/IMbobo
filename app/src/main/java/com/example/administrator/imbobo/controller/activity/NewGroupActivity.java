@@ -97,6 +97,7 @@ public class NewGroupActivity extends Activity {
                 EMGroupOptions options = new EMGroupOptions();
 
                 options.maxUsers = 200;//群最多人容纳多少人
+                options.inviteNeedConfirm = true;//拉人要经过同意新SDK默认不需要
                 EMGroupManager.EMGroupStyle groupStyle = null;//群样式（风格）
 
                 if (cb_newgroup_public.isChecked()){//是否公开为 是
@@ -109,6 +110,7 @@ public class NewGroupActivity extends Activity {
                     if (cb_newgroup_invite.isChecked()){//开放群邀请为 是
                         groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePrivateMemberCanInvite;
                     }else {//开放群邀请为 否
+                        //EMGroupStylePrivateOnlyOwnerInvite——私有群，只有群主可以邀请人
                         groupStyle = EMGroupManager.EMGroupStyle.EMGroupStylePrivateOnlyOwnerInvite;
                     }
                 }

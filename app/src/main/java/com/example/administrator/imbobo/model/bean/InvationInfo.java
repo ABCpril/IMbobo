@@ -58,7 +58,7 @@ public class InvationInfo {
         GROUP_APPLICATION_ACCEPTED,
 
         /**接受了群邀请*/
-        GROUP__ACCEPT_INVITE,
+        GROUP_ACCEPT_INVITE,
 
         /**批准的群加入申请*/
         GROUP_ACCEPT_APPLICATION,

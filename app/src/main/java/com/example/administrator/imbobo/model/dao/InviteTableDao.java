@@ -36,6 +36,9 @@ public class InviteTableDao {
         /**ordinal() 枚举转 integer 按照枚举的序号从0开始的*/
         values.put(InviteTable.COL_STATUS,invationInfo.getStatus().ordinal());//邀请的状态
 
+        //为了排序倒顺序----------Leon新增加---------------------------------------
+        values.put(InviteTable.CURRENTTIME,System.currentTimeMillis());//邀请的时间
+
         UserInfo user = invationInfo.getUser();
         if (user != null){//联系人
             values.put(InviteTable.COL_USER_HXID,invationInfo.getUser().getHxid());
@@ -55,9 +58,9 @@ public class InviteTableDao {
         SQLiteDatabase db = mHelper.getReadableDatabase();
 
         //2.执行查询语句 ↓可以正常使用
-        String sql = "select * from "+InviteTable.TABLE_NAME;
+        //String sql = "select * from "+InviteTable.TABLE_NAME;
         //2.执行查询语句 ↓倒序 根据后来添加的自增长id字段
-        //String sql = "select * from "+InviteTable.TABLE_NAME + " order by id desc";
+        String sql = "select * from "+InviteTable.TABLE_NAME + " order by currentTime desc";
 
         Cursor cursor = db.rawQuery(sql,null);
 
@@ -136,8 +139,8 @@ public class InviteTableDao {
         }
 
         /**接受了群邀请*/
-        if (intStatus == InvationInfo.InvitationStatus.GROUP__ACCEPT_INVITE.ordinal()){
-            return InvationInfo.InvitationStatus.GROUP__ACCEPT_INVITE;
+        if (intStatus == InvationInfo.InvitationStatus.GROUP_ACCEPT_INVITE.ordinal()){
+            return InvationInfo.InvitationStatus.GROUP_ACCEPT_INVITE;
         }
 
         /**批准的群加入申请*/

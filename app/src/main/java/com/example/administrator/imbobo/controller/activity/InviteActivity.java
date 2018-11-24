@@ -16,6 +16,7 @@ import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.model.Model;
 import com.example.administrator.imbobo.model.bean.InvationInfo;
 import com.example.administrator.imbobo.utils.Constant;
+import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 
@@ -107,9 +108,177 @@ public class InviteActivity extends Activity {
                 }
             });
         }
+
+        //接受邀请按钮处理（群）
+        @Override
+        public void onInviteAccept(final InvationInfo invationInfo) {
+            //开辟子线程做网络请求
+            Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //告诉环信服务器接受了邀请
+                        EMClient.getInstance().groupManager().acceptInvitation(invationInfo.getGroup().getGroupId(),
+                                invationInfo.getGroup().getInvatePerson());
+
+                        //本地数据更新
+                        invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_ACCEPT_INVITE);
+
+                        //本地数据库更新
+                        Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+                        //页面数据的变化-回到主线程处理
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"接受邀请成功",Toast.LENGTH_SHORT).show();
+
+                                //刷新页面
+                                refresh();
+                            }
+                        });
+
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                        //页面数据的变化-回到主线程处理
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"接受邀请失败",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        //拒绝邀请按钮处理（群）
+        @Override
+        public void onInviteReject(final InvationInfo invationInfo) {
+            //开辟子线程做网络请求
+            Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //告诉环信服务器拒绝了邀请
+                        EMClient.getInstance().groupManager().declineInvitation(invationInfo.getGroup().getGroupId(),
+                                invationInfo.getGroup().getInvatePerson(),"拒绝邀请");
+
+
+                        //更新本地数据库
+                        invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_REJECT_INVITE);
+                        Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+                        //更新页面-回到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"拒绝邀请成功",Toast.LENGTH_SHORT).show();
+
+                                //刷新页面
+                                refresh();
+                            }
+                        });
+
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                        //更新页面-回到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"拒绝邀请失败",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+
+        //接受申请按钮处理（群）
+        @Override
+        public void onApplicationAccept(final InvationInfo invationInfo) {
+            //开辟子线程做网络请求
+            Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //告诉环信服务器接受了申请
+                        EMClient.getInstance().groupManager().acceptApplication(invationInfo.getGroup().getGroupId()
+                        ,invationInfo.getGroup().getInvatePerson());
+
+                        //更新数据库
+                        invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_ACCEPT_APPLICATION);
+                        Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+                        //更新页面-回到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"接受申请成功",Toast.LENGTH_SHORT).show();
+
+                                //刷新页面
+                                refresh();
+                            }
+                        });
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+
+                        //更新页面-回到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"接受申请失败",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        //拒绝申请按钮处理（群）
+        @Override
+        public void onApplicationReject(final InvationInfo invationInfo) {
+            Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //告诉环信服务器拒绝了申请
+                       // EMClient.getInstance().groupManager().declineInvitation(invationInfo.getGroup().getGroupId(),
+                             //   invationInfo.getGroup().getInvatePerson(),"拒绝申请");
+                        EMClient.getInstance().groupManager().declineApplication(invationInfo.getGroup().getGroupId(),
+                                   invationInfo.getGroup().getInvatePerson(),"拒绝申请");
+
+                        //更新本地数据库
+                        invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_REJECT_APPLICATION);
+                        Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+                        //更新页面-回到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"拒绝申请成功",Toast.LENGTH_SHORT).show();
+
+                                //刷新页面
+                                refresh();
+                            }
+                        });
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                        //更新页面-回到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this,"拒绝申请失败",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     };
 
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private BroadcastReceiver inviteChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             //邀请信息变化刷新页面
@@ -137,7 +306,8 @@ public class InviteActivity extends Activity {
 
         //注册邀请信息变化的广播
         mLBM = LocalBroadcastManager.getInstance(InviteActivity.this);
-        mLBM.registerReceiver(receiver,new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+        mLBM.registerReceiver(inviteChangedReceiver,new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+        mLBM.registerReceiver(inviteChangedReceiver,new IntentFilter(Constant.GROUP_INVITE_CHANGED));
     }
 
     private void refresh(){
@@ -155,7 +325,7 @@ public class InviteActivity extends Activity {
     @Override
     protected void onDestroy() {
         //注册了广播一定要记得关闭
-        mLBM.unregisterReceiver(receiver);
+        mLBM.unregisterReceiver(inviteChangedReceiver);
         super.onDestroy();
     }
 
