@@ -49,7 +49,9 @@ public class InviteTableDao {
             values.put(InviteTable.COL_USER_HXID,invationInfo.getGroup().getInvatePerson());
         }
 
-        db.replace(InviteTable.TABLE_NAME,null,values);
+        //Leon修改bug
+        //db.insert(InviteTable.TABLE_NAME,null,values);.//這個方法插入有問題 primary key 不可重複
+        db.replace(InviteTable.TABLE_NAME,null,values);//这是原来的方法
     }
 
     /**获取邀请信息*/
@@ -201,5 +203,36 @@ public class InviteTableDao {
         //更新状态
         values.put(InviteTable.COL_STATUS,invitationStatus.ordinal());
         db.update(InviteTable.TABLE_NAME,values,InviteTable.COL_USER_HXID+"=?",new String[]{hxId});
+    }
+
+    /**新删除-删除时间最大的一行 即最上面的一行*/
+    public void deleteFirstLineInvitation(){
+        //获取数据库连接
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+
+        String sql = "select " +InviteTable.COL_USER_HXID+ " from "+InviteTable.TABLE_NAME + " order by currentTime desc";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        //定义变量每次只删除一条 最新的数据
+        int i = 1;
+
+        while (cursor.moveToNext() && i > 0){
+
+            /**
+             *  Couldn't read row 0, col -1 from CursorWindow.
+             *  Make sure the Cursor is initialized correctly before accessing data from it.
+             *  at android.database.CursorWindow.nativeGetString(Native Method)
+             *
+             *  获取 COL_USER_HXID  SQL 语句就些获取COL_USER_HXID 不然会报上面的错
+             */
+            String hxId = cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_HXID));
+
+            if (hxId != null){
+                //执行删除语句  " order by currentTime desc"
+                db.delete(InviteTable.TABLE_NAME,InviteTable.COL_USER_HXID+"=?;",new String[]{hxId});
+            }
+            i--;
+        }
     }
 }

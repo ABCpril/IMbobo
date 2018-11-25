@@ -31,6 +31,9 @@ public class InviteAdapter extends BaseAdapter {
 
     private InvationInfo invationInfo;
 
+    /**解決bug 把 position倒過來*/
+    private InvationInfo lEinvationInfo;
+
     public InviteAdapter(Context context,OnInviteListener onInviteListener){
         this.mContext = context;
         this.mOnInviteListener = onInviteListener;
@@ -83,6 +86,15 @@ public class InviteAdapter extends BaseAdapter {
         }else {
             hodler = (ViewHodler)convertView.getTag();
         }
+
+        int lePostion = 0;
+
+        //----解決bug 因爲之前爲了用戶體驗把 InviteTable 表中數據倒序了 這裏把 position 也 倒過來-----
+        if (mInvationInfos.size() - position >= 0){
+            lePostion = mInvationInfos.size() - position -1;
+        }
+        lEinvationInfo = mInvationInfos.get(lePostion);
+        //----解決bug 因爲之前爲了用戶體驗把 InviteTable 表中數據倒序了 這裏把 position 也 倒過來-----
 
         //2.获取当前item数据
         invationInfo = mInvationInfos.get(position);
@@ -137,14 +149,16 @@ public class InviteAdapter extends BaseAdapter {
             hodler.accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnInviteListener.onAccept(invationInfo);
+                    //mOnInviteListener.onAccept(invationInfo);
+                    mOnInviteListener.onAccept(lEinvationInfo);
                 }
             });
             //(拒绝)按钮点击事件的处理
             hodler.reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnInviteListener.onReject(invationInfo);
+                    //mOnInviteListener.onReject(invationInfo);
+                    mOnInviteListener.onReject(lEinvationInfo);
                 }
             });
 
@@ -164,7 +178,7 @@ public class InviteAdapter extends BaseAdapter {
                 //您的群邀请已经被接受   GROUP_INVITE_ACCEPTED
                 case GROUP_INVITE_ACCEPTED:
                     //hodler.reason.setText("您的群邀请已经被接受");
-                    hodler.reason.setText("加入了新的群聊");
+                    hodler.reason.setText("加入了群聊");
                     break;
                  //您的群申请已经被拒绝
                 case GROUP_APPLICATION_DECLINED:
@@ -183,7 +197,8 @@ public class InviteAdapter extends BaseAdapter {
                     hodler.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnInviteListener.onInviteAccept(invationInfo);
+                            //mOnInviteListener.onInviteAccept(invationInfo);
+                            mOnInviteListener.onInviteAccept(lEinvationInfo);
                         }
                     });
 
@@ -191,7 +206,8 @@ public class InviteAdapter extends BaseAdapter {
                     hodler.reject.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnInviteListener.onInviteReject(invationInfo);
+                            //mOnInviteListener.onInviteReject(invationInfo);
+                            mOnInviteListener.onInviteReject(lEinvationInfo);
                         }
                     });
 
@@ -206,7 +222,8 @@ public class InviteAdapter extends BaseAdapter {
                     hodler.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnInviteListener.onApplicationAccept(invationInfo);
+                            //mOnInviteListener.onApplicationAccept(invationInfo);
+                            mOnInviteListener.onApplicationAccept(lEinvationInfo);
                         }
                     });
 
@@ -214,7 +231,8 @@ public class InviteAdapter extends BaseAdapter {
                     hodler.reject.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnInviteListener.onApplicationReject(invationInfo);
+                            //mOnInviteListener.onApplicationReject(invationInfo);
+                            mOnInviteListener.onApplicationReject(lEinvationInfo);
                         }
                     });
 

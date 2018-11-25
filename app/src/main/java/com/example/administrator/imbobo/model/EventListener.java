@@ -46,7 +46,7 @@ public class EventListener {
         @Override
         public void onInvitationReceived(String groupId, String groupName, String inviter, String reson) {
 
-            Log.e("leon","00001");
+            Log.e("leon","接收到群组加入邀请");
             //数据更新
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setReason(reson);
@@ -65,7 +65,7 @@ public class EventListener {
         @Override
         public void onRequestToJoinReceived(String groupId, String groupName, String applicant, String reason) {
 
-            Log.e("leon","00002");
+            Log.e("leon","用户申请加入群");
             //数据更新
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setReason(reason);
@@ -84,7 +84,7 @@ public class EventListener {
         @Override
         public void onRequestToJoinAccepted(String groupId, String groupName, String accepter) {
 
-            Log.e("leon","00003");
+            Log.e("leon","加群申请被同意");
             //更新数据
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setGroup(new GroupInfo(groupName,groupId,accepter));
@@ -105,7 +105,7 @@ public class EventListener {
         @Override
         public void onRequestToJoinDeclined(String groupId, String groupName, String decliner, String reason) {
 
-            Log.e("leon","00004");
+            Log.e("leon","加群申请被拒绝");
             //更新数据
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setReason(reason);
@@ -124,7 +124,7 @@ public class EventListener {
         @Override
         public void onInvitationAccepted(String groupId, String inviter, String reason) {
 
-            Log.e("leon","00065");
+            Log.e("leon","群组邀请被同意");
             //更新数据
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setReason(reason);
@@ -144,7 +144,7 @@ public class EventListener {
         @Override
         public void onInvitationDeclined(String groupId, String inviter, String reason) {
 
-            Log.e("leon","00085");
+            Log.e("leon","群组邀请被拒绝");
             //更新数据
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setReason(reason);
@@ -163,7 +163,7 @@ public class EventListener {
         @Override
         public void onUserRemoved(String groupId, String groupName) {
 
-            Log.e("leon","000089");
+            Log.e("leon","群成员被删除");
         }
 
         //收到 群被解散
@@ -175,7 +175,7 @@ public class EventListener {
         //收到 群邀请被自动接受
         @Override
         public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
-            Log.e("leon","00007");
+            Log.e("leon","接收邀请时自动加入到群组的通知");
             //更新数据
             InvationInfo invationInfo = new InvationInfo();
             invationInfo.setReason(inviteMessage);
@@ -192,53 +192,53 @@ public class EventListener {
 
         @Override
         public void onMuteListAdded(String s, List<String> list, long l) {
-            Log.e("leon","00008");
+            Log.e("leon","成员禁言的通知");
         }
 
         @Override
         public void onMuteListRemoved(String s, List<String> list) {
-            Log.e("leon","00009");
+            Log.e("leon","成员从禁言列表里移除通知");
         }
 
         @Override
         public void onAdminAdded(String s, String s1) {
-            Log.e("leon","000010");
+            Log.e("leon","增加管理员的通知");
         }
 
         @Override
         public void onAdminRemoved(String s, String s1) {
-            Log.e("leon","000011");
+            Log.e("leon","管理员移除的通知");
         }
 
         @Override
         public void onOwnerChanged(String s, String s1, String s2) {
-            Log.e("leon","000012");
+            Log.e("leon","群所有者变动通知");
         }
 
         //群成员加入
         @Override
         public void onMemberJoined(String s, String s1) {
-            Log.e("leon","000013");
+            Log.e("leon","群组加入新成员通知");
         }
 
         @Override
         public void onMemberExited(String s, String s1) {
-            Log.e("leon","000014");
+            Log.e("leon","群成员退出通知");
         }
 
         @Override
         public void onAnnouncementChanged(String s, String s1) {
-            Log.e("leon","000015");
+            Log.e("leon","群公告变动通知");
         }
 
         @Override
         public void onSharedFileAdded(String s, EMMucSharedFile emMucSharedFile) {
-            Log.e("leon","000016");
+            Log.e("leon","增加共享文件的通知");
         }
 
         @Override
         public void onSharedFileDeleted(String s, String s1) {
-            Log.e("leon","000017");
+            Log.e("leon","群共享文件删除通知");
         }
     };
 

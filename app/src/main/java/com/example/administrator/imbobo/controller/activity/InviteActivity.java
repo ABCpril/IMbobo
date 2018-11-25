@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -58,15 +59,27 @@ public class InviteActivity extends Activity {
                                 refresh();
                             }
                         });
-                    } catch (HyphenateException e) {
+                    } catch (final HyphenateException e) {
                         e.printStackTrace();
                         //接受邀请失败的处理
+
+                        //Leon新增加解决bug
+                        if (invationInfo.getUser() != null && invationInfo.getUser().getHxid() != null){
+                            Model.getInstance().getDbManager().getInviteTableDao().removeInvitation(
+                                    invationInfo.getUser().getHxid());
+                        }else {
+                            Model.getInstance().getDbManager().getInviteTableDao().deleteFirstLineInvitation();
+                        }
+                        //Leon新增加解决bug
+
                         //回到主线程处理
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 //页面发生变化
-                                Toast.makeText(InviteActivity.this,"接受邀请失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InviteActivity.this,"接受邀请失败"+e.toString(),Toast.LENGTH_SHORT).show();
+
+                                refresh();
                             }
                         });
                     }
@@ -95,13 +108,25 @@ public class InviteActivity extends Activity {
                                 refresh();
                             }
                         });
-                    } catch (HyphenateException e) {
+                    } catch (final HyphenateException e) {
                         e.printStackTrace();
+
+                        //Leon新增加解决bug
+                        if (invationInfo.getUser() != null && invationInfo.getUser().getHxid() != null){
+                            Model.getInstance().getDbManager().getInviteTableDao().removeInvitation(
+                                    invationInfo.getUser().getHxid());
+                        }else {
+                            Model.getInstance().getDbManager().getInviteTableDao().deleteFirstLineInvitation();
+                        }
+                        //Leon新增加解决bug
+
                         //拒绝失败-页面上提醒用户
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(InviteActivity.this,"拒绝失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InviteActivity.this,"拒绝失败"+e.toString(),Toast.LENGTH_SHORT).show();
+
+                                refresh();
                             }
                         });
                     }
@@ -138,13 +163,25 @@ public class InviteActivity extends Activity {
                             }
                         });
 
-                    } catch (HyphenateException e) {
+                    } catch (final HyphenateException e) {
                         e.printStackTrace();
+                        //Leon新增加解决bug
+                        if (invationInfo.getUser() != null && invationInfo.getUser().getHxid() != null){
+                            Model.getInstance().getDbManager().getInviteTableDao().removeInvitation(
+                                    invationInfo.getUser().getHxid());
+                        }else {
+                            Model.getInstance().getDbManager().getInviteTableDao().deleteFirstLineInvitation();
+                        }
+                        //Leon新增加解决bug
+
                         //页面数据的变化-回到主线程处理
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(InviteActivity.this,"接受邀请失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InviteActivity.this,"接受邀请失败"+e.toString(),Toast.LENGTH_SHORT).show();
+
+                                //刷新页面
+                                refresh();
                             }
                         });
                     }
@@ -180,13 +217,23 @@ public class InviteActivity extends Activity {
                             }
                         });
 
-                    } catch (HyphenateException e) {
+                    } catch (final HyphenateException e) {
                         e.printStackTrace();
+
+                        //Leon新增加解决bug
+                        if (invationInfo.getUser() != null && invationInfo.getUser().getHxid() != null){
+                            Model.getInstance().getDbManager().getInviteTableDao().removeInvitation(
+                                    invationInfo.getUser().getHxid());
+                        }else {
+                            Model.getInstance().getDbManager().getInviteTableDao().deleteFirstLineInvitation();
+                        }
+                        //Leon新增加解决bug
+
                         //更新页面-回到主线程
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(InviteActivity.this,"拒绝邀请失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InviteActivity.this,"拒绝邀请失败"+e.toString(),Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -221,14 +268,24 @@ public class InviteActivity extends Activity {
                                 refresh();
                             }
                         });
-                    } catch (HyphenateException e) {
+                    } catch (final HyphenateException e) {
                         e.printStackTrace();
+
+                        //Leon新增加解决bug
+                        if (invationInfo.getUser() != null && invationInfo.getUser().getHxid() != null){
+                            Model.getInstance().getDbManager().getInviteTableDao().removeInvitation(
+                                    invationInfo.getUser().getHxid());
+                        }else {
+                            Model.getInstance().getDbManager().getInviteTableDao().deleteFirstLineInvitation();
+                        }
+                        //Leon新增加解决bug
 
                         //更新页面-回到主线程
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(InviteActivity.this,"接受申请失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InviteActivity.this,"接受申请失败"+e.toString(),Toast.LENGTH_SHORT).show();
+                                refresh();
                             }
                         });
                     }
@@ -263,13 +320,13 @@ public class InviteActivity extends Activity {
                                 refresh();
                             }
                         });
-                    } catch (HyphenateException e) {
+                    } catch (final HyphenateException e) {
                         e.printStackTrace();
                         //更新页面-回到主线程
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(InviteActivity.this,"拒绝申请失败",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(InviteActivity.this,"拒绝申请失败"+e.toString(),Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

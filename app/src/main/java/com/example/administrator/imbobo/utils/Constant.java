@@ -18,4 +18,10 @@ public class Constant {
     /**刚刚返出InviteActivity 红点不要再显示了*/
     public static final String LEONBROADCAST = "leonbroadcast";
 
+    /**群id*/
+    public static final String GROUP_ID = "group_id";
+
+    /**退群广播*/
+    public static final String EXIT_GROUP = "exit_group";
+
 }
