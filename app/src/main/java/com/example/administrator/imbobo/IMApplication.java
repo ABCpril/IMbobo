@@ -35,7 +35,10 @@ public class IMApplication extends Application {
         Model.getInstance().init(this);
 
 
-        //http://docs.easemob.com/start/200androidcleintintegration/135easeuiuseguide
+        /**
+         * easeUi 官方文档地址：
+         *  http://docs.easemob.com/start/200androidcleintintegration/135easeuiuseguide
+         */
         //-----------------------------------------------leon----------------------------------------------
         EaseUI easeUI = EaseUI.getInstance();
         easeUI.setSettingsProvider(new EaseUI.EaseSettingsProvider() {
