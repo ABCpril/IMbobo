@@ -39,6 +39,16 @@ public class GroupDetailAdapte extends BaseAdapter {
             this.mOnGroupDetailListener = onGroupDetailListener;
     }
 
+    //获取当前的删除模式
+    public boolean ismIsDeleteModle() {
+        return mIsDeleteModle;
+    }
+
+    //设置档期的删除模式
+    public void setmIsDeleteModle(boolean mIsDeleteModle) {
+        this.mIsDeleteModle = mIsDeleteModle;
+    }
+
     //刷新方法-用於刷新和傳參
     public void refresh(List<UserInfo> users){
         if (users != null && users.size() >= 0){

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.administrator.imbobo.model.Model;
+import com.hyphenate.chat.EMChatManager;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 
@@ -31,6 +33,38 @@ public class IMApplication extends Application {
 
         //初始化数据模型层类
         Model.getInstance().init(this);
+
+
+        //http://docs.easemob.com/start/200androidcleintintegration/135easeuiuseguide
+        //-----------------------------------------------leon----------------------------------------------
+        EaseUI easeUI = EaseUI.getInstance();
+        easeUI.setSettingsProvider(new EaseUI.EaseSettingsProvider() {
+
+            //允许MSG通知吗？
+            @Override
+            public boolean isMsgNotifyAllowed(EMMessage message) {
+                return true;
+            }
+
+            //允许MSG声音吗？
+            @Override
+            public boolean isMsgSoundAllowed(EMMessage message) {
+                return false;
+            }
+
+            //允许MSG振动吗？
+            @Override
+            public boolean isMsgVibrateAllowed(EMMessage message) {
+                return false;
+            }
+
+            //IS扬声器打开
+            @Override
+            public boolean isSpeakerOpened() {
+                return false;
+            }
+        });
+        //---------------------------------------------------leon------------------------------------------
 
         //初始化全局上下文
         mContext = this;

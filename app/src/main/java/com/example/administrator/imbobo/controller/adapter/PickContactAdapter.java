@@ -18,17 +18,25 @@ import java.util.List;
 public class PickContactAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<PickContactInfo> mPicks; //= new ArrayList<>();
+    private List<PickContactInfo> mPicks = new ArrayList<>();
+    //已经添加过的人的名单
+    List<String> mExistMembers = new ArrayList<>();
 
-    public PickContactAdapter(Context context,List<PickContactInfo> picks) {
+    public PickContactAdapter(Context context,List<PickContactInfo> picks,List<String> mExistMembers) {
         this.mContext = context;
+//        this.mPicks = picks;
+//        this.mExistMembers = mExistMembers;
 
-        this.mPicks = picks;
+        if (picks != null && picks.size() >= 0){
+            this.mPicks.clear();
+            this.mPicks.addAll(picks);
+        }
 
-//        if (picks != null && picks.size() >= 0){
-//            this.mPicks.clear();
-//            this.mPicks.addAll(picks);
-//        }
+        //已经存在的成员集合
+        if (mExistMembers != null && mExistMembers.size() >= 0){
+            this.mExistMembers.clear();
+            this.mExistMembers.addAll(mExistMembers);
+        }
     }
 
 
@@ -72,6 +80,12 @@ public class PickContactAdapter extends BaseAdapter {
         //3.显示数据
         holder.tv_name.setText(pickContactInfo.getUser().getName());
         holder.cb.setChecked(pickContactInfo.isChecked());
+
+        //判断
+        if (mExistMembers.contains(pickContactInfo.getUser().getHxid())){
+            holder.cb.setChecked(true);
+            pickContactInfo.setChecked(true);
+        }
 
         //4.返回convertView
         return convertView;

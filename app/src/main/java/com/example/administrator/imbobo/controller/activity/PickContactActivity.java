@@ -15,6 +15,9 @@ import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.model.Model;
 import com.example.administrator.imbobo.model.bean.PickContactInfo;
 import com.example.administrator.imbobo.model.bean.UserInfo;
+import com.example.administrator.imbobo.utils.Constant;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +33,37 @@ public class PickContactActivity extends Activity {
     private List<PickContactInfo> mPicks;
     private PickContactAdapter pickContactAdapter;
 
+    //群中已经存在的群成员
+    private List<String> mExistMembers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_contact);
+
+        //获取传递过来的数据
+        getData();
 
         initView();
 
         initData();
 
         initListener();
+    }
+
+    private void getData(){
+        String groupId = getIntent().getStringExtra(Constant.GROUP_ID);
+
+        if (groupId != null){
+            EMGroup group = EMClient.getInstance().groupManager().getGroup(groupId);
+            //获取群中已经存在的所有群成员
+            mExistMembers = group.getMembers();
+        }
+
+        //为了避免空指针异常mExistMembers == null 给mExistMembers一个空的集合
+        if (mExistMembers == null){
+            mExistMembers = new ArrayList<>();
+        }
     }
 
     private void initListener(){
@@ -96,13 +120,13 @@ public class PickContactActivity extends Activity {
             }
 
             //初始化list view 创建适配器 放进了if语句里避免空指针异常
-            pickContactAdapter = new PickContactAdapter(this,mPicks);
-            lv_pick.setAdapter(pickContactAdapter);
+            //pickContactAdapter = new PickContactAdapter(this,mPicks);
+            //lv_pick.setAdapter(pickContactAdapter);
         }
 
-//        //初始化list view 创建适配器 放进了if语句里避免空指针异常
-//        pickContactAdapter = new PickContactAdapter(this,mPicks);
-//        lv_pick.setAdapter(pickContactAdapter);
+        //初始化list view 创建适配器 放进了if语句里避免空指针异常
+        pickContactAdapter = new PickContactAdapter(this,mPicks,mExistMembers);
+        lv_pick.setAdapter(pickContactAdapter);
     }
 
     private void initView(){

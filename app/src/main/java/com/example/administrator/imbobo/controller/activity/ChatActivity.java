@@ -1,9 +1,13 @@
 package com.example.administrator.imbobo.controller.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 
 import com.example.administrator.imbobo.R;
@@ -21,6 +25,9 @@ public class ChatActivity extends FragmentActivity {
 
     private String mHxid;
     private EaseChatFragment easeChatFragment;
+    private LocalBroadcastManager mLBM;
+    private int mChatType;
+    private BroadcastReceiver exitGroupReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +88,23 @@ public class ChatActivity extends FragmentActivity {
                 return null;
             }
         });
+
+        //如果当前类型为群聊
+        if (mChatType == EaseConstant.CHATTYPE_GROUP){
+
+            //注册退群广播
+            exitGroupReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (mHxid.equals(intent.getStringExtra(Constant.GROUP_ID))){
+                        //结束当前页面
+                        finish();
+                    }
+                }
+            };
+
+            mLBM.registerReceiver(exitGroupReceiver,new IntentFilter(Constant.EXIT_GROUP));
+        }
     }
 
     private void initData(){
@@ -89,6 +113,8 @@ public class ChatActivity extends FragmentActivity {
 
         mHxid = getIntent().getStringExtra(EaseConstant.EXTRA_USER_ID);
 
+        //获取聊天类型
+        mChatType = getIntent().getExtras().getInt(EaseConstant.EXTRA_CHAT_TYPE);
         easeChatFragment.setArguments(getIntent().getExtras());
 
         //替换fragment-activity继承FragmentActivity才有的方法
@@ -96,5 +122,17 @@ public class ChatActivity extends FragmentActivity {
 
         //替换fragment
         transaction.replace(R.id.fl_chat,easeChatFragment).commit();
+
+        //获取发送广播的管理者
+        mLBM = LocalBroadcastManager.getInstance(ChatActivity.this);
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        //注销广播 有注册就有注销 合理管理内存
+        mLBM.unregisterReceiver(exitGroupReceiver);
+
+        super.onDestroy();
     }
 }

@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import com.example.administrator.imbobo.model.bean.UserInfo;
 import com.example.administrator.imbobo.utils.Constant;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMGroupManager;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
@@ -47,10 +50,17 @@ public class GroupDetailActivity extends Activity {
     /**處理 增加 和刪除群成員的業務邏輯的接口*/
     private GroupDetailAdapte.OnGroupDetailListener mOnGroupDetailListener = new GroupDetailAdapte.
             OnGroupDetailListener() {
+        //添加群成員
         @Override
         public void onAddMembers() {
-            //添加群成員-開闢子綫程做網絡請求
+            //跳转到选择联系人页面
+            Intent intent = new Intent(GroupDetailActivity.this,PickContactActivity.class);
 
+            //传递群id
+            intent.putExtra(Constant.GROUP_ID,mGroup.getGroupId());
+
+            //带返回参数的跳转
+            startActivityForResult(intent,2);
         }
 
         @Override
@@ -97,6 +107,121 @@ public class GroupDetailActivity extends Activity {
         getData();
 
         initData();
+
+        initListener();
+    }
+
+    private void initListener(){
+//        gv_groupdetail.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()){
+//                    case MotionEvent.ACTION_DOWN:
+//
+//                        //判断当前是否是删除模式,如果是删除模式
+//                        if (groupDetailAdapte.ismIsDeleteModle()){
+//                            //切换为非删除模式
+//                            groupDetailAdapte.setmIsDeleteModle(false);
+//
+//                            //刷新页面-适配器刷新
+//                            groupDetailAdapte.notifyDataSetChanged();
+//                        }
+//
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+
+        //----------------------------leon------------------------------
+        gv_groupdetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                //判断当前是否是删除模式,如果是删除模式
+                if (groupDetailAdapte.ismIsDeleteModle()) {
+                    //切换为非删除模式
+                    groupDetailAdapte.setmIsDeleteModle(false);
+
+                    //开辟子线程做网络请求
+                    Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            //把username从群聊里删除
+                            try {
+                                EMClient.getInstance().groupManager().removeUserFromGroup(mGroup
+                                        .getGroupId(), mUsers.get(position).getHxid());
+                                //刷新页面 删除成功-回到主线程
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //刷新页面-适配器刷新
+                                        //groupDetailAdapte.notifyDataSetChanged();
+
+                                        //刷新页面-传递数据刷新-下面这个方法会再到环信服务器上获取群成员
+                                        getMembersFromHxServer();
+
+                                        Toast.makeText(GroupDetailActivity.this,"移除成功",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (final HyphenateException e) {
+                                e.printStackTrace();
+                                //删除失败提示用户-回到主线程
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //刷新页面-适配器刷新
+                                        Toast.makeText(GroupDetailActivity.this,"移除失败"+e.toString(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        //----------------------------leon------------------------------
+    }
+
+    //添加群成员时有一个返回参数的跳转这里要重写这个方法
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){
+            //这里和PickContactActivity返回参数时的key一样 获取返回的群成员信息
+            final String[] memberses = data.getStringArrayExtra("members");
+
+            //开辟子线程-和环信服务器交互
+            Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //去环信服务器，发送邀请信息
+                        EMClient.getInstance().groupManager().addUsersToGroup(mGroup.getGroupId(),memberses);
+
+                        //更新页面-切换到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(GroupDetailActivity.this,"发送邀请成功",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } catch (final HyphenateException e) {
+                        e.printStackTrace();
+                        //更新页面-切换到主线程
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(GroupDetailActivity.this,"发送邀请失败"+e.toString(),Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private void initData(){
