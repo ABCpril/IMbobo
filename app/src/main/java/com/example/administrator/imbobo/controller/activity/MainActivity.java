@@ -1,11 +1,17 @@
 package com.example.administrator.imbobo.controller.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,6 +20,11 @@ import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.controller.fragment.ChatFragment;
 import com.example.administrator.imbobo.controller.fragment.ContactListFragment;
 import com.example.administrator.imbobo.controller.fragment.SettingFragment;
+import com.example.administrator.imbobo.utils.Constant;
+import com.example.administrator.imbobo.utils.NumImageView;
+import com.example.administrator.imbobo.utils.SpUtils;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 
 /**
  * 应用标识(AppKey)	leon88888888#instantmessaging
@@ -37,6 +48,23 @@ public class MainActivity extends FragmentActivity{
     private ChatFragment chatFragment;
     private ContactListFragment contactListFragment;
     private SettingFragment settingFragment;
+    private LocalBroadcastManager mLBM;
+    private boolean pitchOn = false;
+    /**后面添加的右上角的角标*/
+    private NumImageView myView;
+
+    //接收到群组消息广播的处理
+    private BroadcastReceiver receiverMessageReceived = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //显示信封有信息
+            if (!pitchOn) {
+                myView.setNum("@");
+            } else {
+                myView.setNum("0");
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +90,19 @@ public class MainActivity extends FragmentActivity{
                     //会话列表页面
                     case R.id.rb_main_chat:
                         fragment = chatFragment;
+                        pitchOn = true;
+                        myView.setNum("0");
                         break;
                     //联系人页面
                     case R.id.rb_main_contact:
                         fragment = contactListFragment;
+                        pitchOn = false;
                         break;
 
                     //设置页面
                     case R.id.rb_main_setting:
                         fragment = settingFragment;
+                        pitchOn = false;
                         break;
                 }
 
@@ -98,8 +130,26 @@ public class MainActivity extends FragmentActivity{
 
     private void initView(){
         rg_main = (RadioGroup) findViewById(R.id.rg_main);
+        myView = (NumImageView)findViewById(R.id.myView);
+
+        String username = EMClient.getInstance().getCurrentUser();
+        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(username);
+        if (conversation != null){
+            int num = conversation.getUnreadMsgCount();
+            myView.setNum(String.valueOf(num));
+        }
+
+        //注册广播
+        mLBM = LocalBroadcastManager.getInstance(MainActivity.this);
+        //ContactInviteChangeReceiver - receiver
+        mLBM.registerReceiver(receiverMessageReceived,new IntentFilter(Constant.MESSAGE_RECEIVED));
     }
 
+    @Override
+    protected void onDestroy() {
 
-
+        //合理管理内存有注册有销毁
+        mLBM.unregisterReceiver(receiverMessageReceived);
+        super.onDestroy();
+    }
 }

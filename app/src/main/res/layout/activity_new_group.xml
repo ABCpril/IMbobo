@@ -8,6 +8,7 @@
     tools:context=".controller.activity.NewGroupActivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/titlebar_newgroup"
         app:titleBarTitle="新建群组"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

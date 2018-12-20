@@ -12,6 +12,34 @@
 
     <!--android:background="@android:color/holo_red_light"-->
     <Button
+        android:id="@+id/bt_about"
+        android:text=" 关于我们"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@drawable/about"
+        android:paddingLeft="20dp"
+        android:background="@drawable/setting_fragment_bg_selector"
+        android:layout_height="60dp" />
+
+    <!--android:background="@android:color/holo_red_light"-->
+    <Button
+        android:id="@+id/bt_share"
+        android:text=" share bobo"
+        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/black"
+        android:drawableLeft="@drawable/share"
+        android:paddingLeft="20dp"
+        android:background="@drawable/setting_fragment_bg_selector"
+        android:layout_height="60dp" />
+    <Button
         android:id="@+id/bt_setting_out"
         android:text="退出登陆"
         android:textSize="20sp"
@@ -20,7 +48,7 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:textColor="@android:color/black"
-        android:drawableLeft="@drawable/out"
+        android:drawableLeft="@drawable/out5"
         android:paddingLeft="20dp"
         android:background="@drawable/setting_fragment_bg_selector"
         android:layout_height="60dp" />

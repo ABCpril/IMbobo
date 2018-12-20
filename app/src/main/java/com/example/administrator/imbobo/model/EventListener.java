@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.model.bean.GroupInfo;
 import com.example.administrator.imbobo.model.bean.InvationInfo;
 import com.example.administrator.imbobo.model.bean.UserInfo;
+import com.example.administrator.imbobo.service.MediaService;
 import com.example.administrator.imbobo.utils.SpUtils;
 import com.hyphenate.EMContactListener;
 import com.hyphenate.EMGroupChangeListener;
@@ -54,6 +56,9 @@ public class EventListener {
             invationInfo.setStatus(InvationInfo.InvitationStatus.NEW_GROUP_INVITE);
             Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
 
+            //----------------------leon新增加播放音乐-------------------------------
+            MediaService.play(mContext, R.raw.level_up);
+
             //红点处理
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
 
@@ -92,6 +97,9 @@ public class EventListener {
             invationInfo.setStatus(InvationInfo.InvitationStatus.GROUP_APPLICATION_ACCEPTED);
 
             Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //----------------------leon新增加播放音乐-------------------------------
+            MediaService.play(mContext, R.raw.level_up);
 
             //红点处理
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
@@ -164,6 +172,8 @@ public class EventListener {
         public void onUserRemoved(String groupId, String groupName) {
 
             Log.e("leon","群成员被删除");
+            //----------------------leon新增加播放音乐-------------------------------
+            MediaService.play(mContext, R.raw.level_up);
         }
 
         //收到 群被解散
@@ -281,6 +291,10 @@ public class EventListener {
             //设置邀请的状态
             invationInfo.setStatus(InvationInfo.InvitationStatus.NEW_INVITE);
             Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
+
+            //----------------------leon新增加播放音乐-------------------------------
+            MediaService.play(mContext, R.raw.level_up);
+
             //红点的处理
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
 
@@ -298,6 +312,9 @@ public class EventListener {
             invationInfo.setStatus(InvationInfo.InvitationStatus.INVITE_ACCEPT_BY_PEER);
             Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
 
+            //----------------------leon新增加播放音乐-------------------------------
+            MediaService.play(mContext, R.raw.level_up);
+
             //红点的处理
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);
 
@@ -314,11 +331,15 @@ public class EventListener {
             //设置拒绝原因
             invationInfo.setReason("拒绝添加");
             invationInfo.setUser(new UserInfo(hxid));
+
             //别人拒绝你的邀请
             invationInfo.setStatus(InvationInfo.InvitationStatus.REFUSE_AN_INVITATION);
             Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invationInfo);
             //拒绝邀请的处理-Leon---------------------------------------
 
+
+            //----------------------leon新增加播放音乐-------------------------------
+            MediaService.play(mContext, R.raw.level_up);
 
             //红点的处理
             SpUtils.getInstance().save(SpUtils.IS_NEW_INVITE,true);

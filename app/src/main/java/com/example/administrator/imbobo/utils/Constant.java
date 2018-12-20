@@ -24,4 +24,11 @@ public class Constant {
     /**退群广播*/
     public static final String EXIT_GROUP = "exit_group";
 
+    /**群邀请信息变化的广播*/
+    public static final String MESSAGE_RECEIVED = "message_received";
+
+    /**播放音乐用到的常量*/
+    public static final String KEY_SOUND_RES_ID_IN_INTENT = "SOUND_RES";
+    public static final String KEY_PAUSE_MUSIC = "PAUSE_MUSIC";
+
 }

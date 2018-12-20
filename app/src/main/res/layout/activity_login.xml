@@ -26,7 +26,12 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
+        <!--android:focusableInTouchMode="true"  android:focusable="true" ↑上面增加了 不让光标默认选中输入框-->
+
+
         <TextView
             android:text="用户名："
             android:textSize="25sp"
@@ -34,7 +39,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/et_login_name"
-            android:hint="请输入用户名"
+            android:hint="请输入手机号"
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -43,14 +48,18 @@
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
+        <!--android:focusableInTouchMode="true"  android:focusable="true" ↑上面增加了 不让光标默认选中输入框-->
+
         <TextView
             android:text="密    码："
             android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-           android:id="@+id/et_login_pwd"
+            android:id="@+id/et_login_pwd"
             android:hint="请输入密码"
             android:inputType="number"
             android:layout_width="match_parent"
@@ -61,19 +70,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/bt_login_regist"
-            android:text="注册"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+        <!--<Button-->
+        <!--android:id="@+id/bt_login_regist"-->
+        <!--android:text="注册"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content" />-->
         <Button
             android:id="@+id/bt_login_login"
             android:text="登陆"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
-    </LinearLayout>
 
+    </LinearLayout>
+    <TextView
+        android:id="@+id/to_regist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="还没有账号？"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="10dp"/>
 
 </LinearLayout>

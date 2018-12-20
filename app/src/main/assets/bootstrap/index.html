@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<!--IE8开启标准渲染模式代码-->
+		<meta http-equiv="X-UA-Compatible" content="edge" />
+		<!--配置窗口(视窗)-->
+		<meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
+		<title>bootstrap项目实战</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap-maizi.css">
+		<link rel="stylesheet" href="css/animate.css">
+	</head>
+
+	<body>
+
+		<!--导航-->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<!--小屏幕导航按钮和logo-->
+				<div class="navbar-header">
+					<botton class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</botton>
+					<a href="index.html" class="navbar-brand">波波IM</a>
+				</div>
+				<!--小屏幕导航按钮和logo-->
+
+				<!--导航-->
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#home">波波</a></li>
+						<li><a href="#bbs">論壇</a></li>
+						<li><a href="#html5">前端</a></li>
+						<li><a href="#course">編程語言</a></li>
+						<li><a href="#app">GitHub</a></li>
+						<li><a href="#contact">聯繫我們</a></li>
+					</ul>
+				</div>
+				<!--导航-->
+			</div>
+		</nav>
+		<!--導航-->
+
+		<!--home-->
+		<section id="home">
+			<div class="lvjing">
+				<div class="container">
+					<div class="row wow fadeInUp" date-wow-duration='1s' data-wow-delay='1s'>
+						<div class="col-md-1"></div>
+						<div class="col-md-10">
+							<h1>求知若渴 虛心若愚！     </h1>
+							<p>
+								最好的化妝是微笑，最好的飾品是謙虛，最好的衣裳是自信
+								<br> The best make-up is smile. The best jewelry is modesty. The best clothing is confidence
+							</p>
+							<img src="images/number.jpg" class="img-responsive" alt="php">
+
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--home-->
+
+		<!--bbs-->
+		<section id="bbs">
+			<div class="container">
+				<div class="row wow fadeInUp" date-wow-duration='0.5s'>
+					<div class="col-md-4">
+						<a href="javascript:;" target="_blank">
+							<img src="images/a.png" class="img-responsive" alt="android">
+							<h3>Android開發</h3>
+							<p>Android早期由“Android之父”之稱的Andy Rubin創辦，Google於2005年並購了成立僅22個月的高科技企業Android。</p>
+						</a>
+					</div>
+					<div class="col-md-4">
+						<a href="javascript:;" target="_blank">
+							<img src="images/i.png" class="img-responsive" alt="ios">
+							<h3>IOS開發</h3>
+							<p>蘋果公司最早於2007年1月9日的Macworld大會上公布這個系統，最初是設計給iPhone使用的，
+								後來陸續套用到iPod touch、iPad以及Apple TV等產品上。iOS與蘋果的Mac OS X操作系統壹樣，
+								屬於類Unix的商業操作系統。原本這個系統名為iPhone OS
+							</p>
+						</a>
+					</div>
+					<div class="col-md-4">
+						<a href="javascript:;" target="_blank">
+							<img src="images/b.png" class="img-responsive" alt="嵌入式開發">
+							<h3>嵌入式底層開發</h3>
+							<p>嵌入式系統是軟件和硬件的綜合體，還可以涵蓋機械等附屬裝置。國內普遍認同的嵌入式系統定義為：
+								以應用為中心，以計算機技術為基礎，軟硬件可裁剪，適應應用系統對功能、可靠性、成本、體積、
+								功耗等嚴格要求的專用計算機系統。
+							</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--bbs-->
+
+		<!--html5-->
+		<section id="html5">
+			<div class="container">
+				<div class="col-md-6 wow fadeInLeft">
+					<h2>HTML5前端開發</h2>
+					<p>前端開發通過HTML，CSS及JavaScript以及衍生出來的各種技術、框架、解決方案，來實現互聯網產品的用戶界面交互。</p>
+					<p><span class="glyphicon glyphicon-grain mai-icon"></span>使用HTML5與CSS3技術輕鬆實現設備自適應展示。</p>
+					<p><span class="glyphicon glyphicon-grain mai-icon"></span>清晰明了的語意代碼結構，更高的可讀性，更利於頁面維護</p>
+				</div>
+				<div class="col-md-6 wow fadeInRight">
+					<img src="images/html5.jpg" class="img-responsive" alt="HTML5">
+				</div>
+			</div>
+		</section>
+		<!--html5-->
+
+		<!--bootstrap-->
+		<section id="bootstrap">
+			<div class="container wow fadeInUp">
+				<div class="col-md-6">
+					<img src="images/bootstrap1.jpeg" class="img-responsive" alt="HTML5">
+				</div>
+				<div class="col-md-6">
+					<h2>Bootstrap框架</h2>
+					<p>Bootstrap是美國Twitter公司的設計師Mark Otto和Jacob Thornton合作基於HTML、CSS、JavaScript 開發的簡潔、直觀、
+						強悍的前端開發框架，使得 Web 開發更加快捷。</p>
+					<p><span class="glyphicon glyphicon-grain mai-icon"></span>你的網站和應用能在bootstrap的幫助下通過同一份代碼快捷、有效的適配手機、平板、PC設備</p>
+					<p><span class="glyphicon glyphicon-grain mai-icon"></span>清晰明了的語意代碼結構，更高的可讀性，更利於頁面維護</p>
+				</div>
+			</div>
+		</section>
+		<!--bootstrap-->
+
+		<!--最新課程-->
+		<!--<section id="course">-->
+		<!--<div class="container">-->
+		<!--&lt;!&ndash; data-wow-delay 動畫延遲時間 &ndash;&gt;-->
+		<!--<div class="row wow fadeIn" data-wow-duration="1.5s">-->
+		<!--<div class="col-md-12">-->
+		<!--<h2>最新課程</h2>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+		<!--<div class="col-md-3">-->
+		<!--<div class="course">-->
+		<!--<img src="images/swift.jpg" class="img-responsive"></img>-->
+		<!--<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">-->
+		<!--加入學習-->
+		<!--</a>-->
+		<!--</div>-->
+		<!--</div>-->
+
+		<!--</div>-->
+		<!--</div>-->
+		<!--</section>-->
+		<section id="course">
+			<div class="container">
+				<!-- data-wow-delay 動畫延遲時間 -->
+				<div class="row wow fadeIn" data-wow-duration="1.5s">
+					<div class="col-md-12">
+						<h2>編程語言</h2>
+					</div>
+					<div class="col-md-4">
+						<div class="course">
+							<img src="images/java.jpg" class="img-responsive"></img>
+							<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">
+                        Java
+                    </a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="course">
+							<img src="images/python.jpg" class="img-responsive"></img>
+							<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">
+                        Python
+                    </a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="course">
+							<img src="images/php1.jpg" class="img-responsive"></img>
+							<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">
+                        PHP
+                    </a>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="course">
+							<img src="images/c1.jpg" class="img-responsive"></img>
+							<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">
+                        C#
+                    </a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="course">
+							<img src="images/javaScript.jpg" class="img-responsive"></img>
+							<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">
+                        JavaScript
+                    </a>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="course">
+							<img src="images/swift.jpg" class="img-responsive"></img>
+							<a href="javascript:;" class="btn btn-primary" target="_blank" role="button">
+                        swift
+                    </a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+		<!--最新課程-->
+
+		<!--app-->
+		<section id="app">
+			<div class="container">
+				<div class="row wow fadeInUp">
+					<div class="col-md-6">
+						<h2>波波GitHub地址</h2>
+						<p>
+							我們在設計上不斷最求美，而美來自生活中的點點滴滴，一個簡單而富有哲理就像波波應用中每一處都以最簡單最直接的方式將美展現在用戶面前。
+						</p>
+						<!--<button class="btn btn-primary">
+							<span class="glyphicon glyphicon-download-alt"></span> iPhone版
+						</button>
+						<button class="btn btn-primary">
+							<span class="glyphicon glyphicon-download-alt"></span> Android版
+						</button>-->
+					</div>
+					<div class="col-md-6">
+						<img src="images/banner.png" class="img-responsive" alt="appBanner">
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--app-->
+
+		<!--聯繫小麥-->
+		<section id="contact">
+			<div class="lvjing">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6 wow fadeInLeft">
+							<h2>
+                        <span class="glyphicon glyphicon-send"></span>
+                        &nbsp;
+                        聯繫波波
+                    </h2>
+							<p>
+							  傾聽用戶的聲音，堅持極簡的設計，探索更優秀的交互，將產品的每一個細節都完美的展現給中國以及世界各地的用戶。
+							</p>
+							<address>
+                        <p>
+                            <span class="glyphicon glyphicon-home"></span>
+                            &nbsp;
+                            地址：開封市高新區谷營軟件園D5-11
+                        </p>
+                        <p>
+                            <span class="glyphicon glyphicon-phone-alt"></span>
+                            &nbsp;
+                            聯繫電話：0371-26139015
+                        </p>
+                        <p>
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            &nbsp;
+                            郵箱：henanleon@126.com
+                        </p>
+                    </address>
+						</div>
+						<!--<div class="col-md-6 wow fadeInRight">
+							<from action="#" method="post">
+								<div class="col-md-6">
+									<input type="text" class="form-control" placeholder="您的姓名"></input>
+								</div>
+								<div class="col-md-6">
+									<input type="email" class="form-control" placeholder="您的郵箱"></input>
+								</div>
+								<div class="col-md-12">
+									<input type="email" class="form-control" placeholder="標題"></input>
+								</div>
+								<div class="col-md-12">
+									<textarea class="form-control" placeholder="留言內容" rows="4"></textarea>
+								</div>
+								<div class="col-md-8">
+									<input type="submit" class="form-control" value="提交">
+								</div>
+							</from>
+						</div>-->
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--聯繫小麥-->
+
+		<!--footer-->
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<p>
+							Copyright&nbsp; © 2012-2050&nbsp; www.maiziedu.com &nbsp; 豫ICP备13014270号-4
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
+		<!--footer-->
+
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.singlePageNav.min.js"></script>
+		<script src="js/wow.min.js"></script>
+		<script>
+			$(function(){
+			        /**導航跳轉動畫插件*/
+			        $('.nav').singlePageNav({
+			            offset:70
+			        });
+			        /**小屏幕導航點擊關閉菜單*/
+			        $('.navbar-collapse a').click(function(){
+			          $('.navbar-collapse').collapse('hide');
+			        });
+			        new WOW().init();
+			    })
+		</script>
+	</body>
+
+</html>

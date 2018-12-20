@@ -11,11 +11,14 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.imbobo.R;
 import com.example.administrator.imbobo.model.Model;
 import com.example.administrator.imbobo.model.bean.UserInfo;
+import com.example.administrator.imbobo.service.MediaService;
+import com.example.administrator.imbobo.utils.LECustomProgressDialog;
 import com.example.administrator.imbobo.utils.TestRegUtils;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -30,8 +33,17 @@ public class LoginActivity extends Activity {
 
     private EditText et_login_name;
     private EditText et_login_pwd;
-    private Button bt_login_regist;
+    private TextView to_regist;
     private Button bt_login_login;
+    private LECustomProgressDialog progressDialog;
+
+    /**产生加载中动画的全局变量……*/
+    private int i = 0;
+
+    //自造加载中的动画
+    String[] lodingStrs = {"加载中.","加载中..","加载中...","加载中....",
+            "加载中......","加载中........","加载中"};
+
 
 
     @Override
@@ -49,10 +61,13 @@ public class LoginActivity extends Activity {
 
     private void initListener(){
         //注册按钮的点击事件处理
-        bt_login_regist.setOnClickListener(new View.OnClickListener() {
+        to_regist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                regist();
+                Intent intent = new Intent(LoginActivity.this,RegistActivity.class);
+
+                /**跳转activity回带参数的跳转 需要重写onActivityResult*/
+                startActivityForResult(intent,2);
             }
         });
 
@@ -65,8 +80,21 @@ public class LoginActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //成功获取到联系人
+        if (resultCode == RESULT_OK){
+            //自动填写用户在注册页面填写的账号密码
+            et_login_name.setText(data.getStringExtra("name"));
+            et_login_pwd.setText(data.getStringExtra("password"));
+        }
+    }
+
     //登陆按钮的业务逻辑处理
     private void login(){
+
         //1获取输入的用户名和密码
         final String loginName = et_login_name.getText().toString();
         final String loginPwd = et_login_pwd.getText().toString();
@@ -75,6 +103,11 @@ public class LoginActivity extends Activity {
         //2校验输入的用户名和密码
         if (TestRegUtils.testTelephone(loginName,LoginActivity.this) && TestRegUtils.
                 testPwd(loginPwd, LoginActivity.this)) {
+
+            progressDialog.show();
+
+            progressDialog.setMessage(lodingStrs[++i % 8]);
+
 
             //3登陆逻辑的处理
             Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
@@ -97,7 +130,8 @@ public class LoginActivity extends Activity {
                                 @Override
                                 public void run() {
                                     //提示登陆成功
-                                    Toast.makeText(LoginActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
+                                    progressDialog.setMessage("登陆成功");
+                                    progressDialog.dismiss();
                                     //跳转到主页面
                                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                                     startActivity(intent);
@@ -113,8 +147,12 @@ public class LoginActivity extends Activity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+
+                                    progressDialog.setMessage("登陆失败");
+                                    progressDialog.dismiss();
+
                                     //提示用户登陆失败
-                                   // Log.e("leon",s);
+                                    // Log.e("leon",s);
                                     if(s.equals("User dosn't exist")){
                                         Toast.makeText(LoginActivity.this,"用户不存在",Toast.LENGTH_SHORT).show();
                                     }else if(s.equals("Username or password is wrong")) {
@@ -123,6 +161,7 @@ public class LoginActivity extends Activity {
                                         Toast.makeText(LoginActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
                                     }else {
                                         Log.e("登陆失败:",s);
+                                        progressDialog.dismiss();
                                         Toast.makeText(LoginActivity.this,"登陆失败"+s,Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -133,7 +172,9 @@ public class LoginActivity extends Activity {
                         //登陆过程中的处理
                         @Override
                         public void onProgress(int i, String s) {
-
+                            progressDialog.show();
+                            progressDialog.setProgress(i);
+                            progressDialog.setMessage(s);
                         }
                     });
                 }
@@ -141,56 +182,6 @@ public class LoginActivity extends Activity {
         }
     }
 
-    //注册的业务逻辑处理
-    private void regist() {
-
-        //1获取输入的用户名和密码
-        final String registName = et_login_name.getText().toString();
-        final String registPwd = et_login_pwd.getText().toString();
-
-        //2校验输入的用户名和密码
-        if (TestRegUtils.testTelephone(registName,LoginActivity.this) && TestRegUtils.testPwd(registPwd,
-                LoginActivity.this)){
-
-            //3去服务器注册账号
-            Model.getInstance().getGloabalThreadPool().execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        //去环信服务器注册账号
-                        EMClient.getInstance().createAccount(registName,registPwd);
-
-                        //注册成功更新页面显示
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(LoginActivity.this,"注册成功",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } catch (final HyphenateException e) {
-                        e.printStackTrace();
-
-                        //注册失败更新页面显示
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (e.toString().equals("com.hyphenate.exceptions.HyphenateException: User already exist")){
-                                    Toast.makeText(LoginActivity.this,"该账号已注册",Toast.LENGTH_SHORT).show();
-                                }else if (e.toString().equals("com.hyphenate.exceptions.HyphenateException: Registration failed.")){
-                                    Toast.makeText(LoginActivity.this,"请检查网络",Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(LoginActivity.this,"注册失败",Toast.LENGTH_SHORT).show();
-                                }
-
-                                Log.e("leon",String.valueOf(e.toString()));
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-    }
 
     /**初始化页面*/
     private void initView() {
@@ -198,8 +189,11 @@ public class LoginActivity extends Activity {
         et_login_pwd = (EditText) findViewById(R.id.et_login_pwd);
         //设置密码暗文显示
         et_login_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        bt_login_regist = (Button) findViewById(R.id.bt_login_regist);
+        to_regist = (TextView) findViewById(R.id.to_regist);
         bt_login_login = (Button) findViewById(R.id.bt_login_login);
+
+        //用户点击登陆后的loading页面
+        progressDialog = new LECustomProgressDialog(this);
     }
 
 }

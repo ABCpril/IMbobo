@@ -8,6 +8,7 @@
     tools:context=".controller.activity.GroupListActivity">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
+        android:id="@+id/titlebar_grouplist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleBarTitle="群组列表"/>

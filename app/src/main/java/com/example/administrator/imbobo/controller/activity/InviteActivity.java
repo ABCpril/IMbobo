@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.example.administrator.imbobo.model.bean.InvationInfo;
 import com.example.administrator.imbobo.utils.Constant;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.List;
@@ -33,6 +35,9 @@ public class InviteActivity extends Activity {
     private ListView iv_invite;
     private InviteAdapter inviteAdapter;
     private LocalBroadcastManager mLBM;
+
+    /**添加这个是应要求给原生的EaseTitleBar添加返回键*/
+    private EaseTitleBar titlebar_invite;
 
 
     private InviteAdapter.OnInviteListener mOnInviteListener = new InviteAdapter.OnInviteListener() {
@@ -350,6 +355,8 @@ public class InviteActivity extends Activity {
 
         initView();
 
+        initListener();
+
         initData();
     }
 
@@ -377,6 +384,18 @@ public class InviteActivity extends Activity {
 
     private void initView(){
         iv_invite = (ListView)findViewById(R.id.iv_invite);
+        titlebar_invite = (EaseTitleBar)findViewById(R.id.titlebar_invite);
+        titlebar_invite.setLeftImageResource(R.drawable.back_button_selecter);
+    }
+
+    //titleBar左上角点击返回键的处理
+    private void initListener(){
+        titlebar_invite.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

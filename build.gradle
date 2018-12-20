@@ -5,10 +5,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+
+        //为了显示角标新增加
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
-    }
+  }
 }
 
 allprojects {

@@ -16,6 +16,7 @@ import com.example.administrator.imbobo.model.Model;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.List;
@@ -23,13 +24,16 @@ import java.util.List;
 
 /**
  * Created by Leon on 2018/10/13
- * Functions: 群主列表页面
+ * Functions: 群组列表页面
  */
 public class GroupListActivity extends Activity {
 
     private ListView lv_grouplist;
     private GroupListAdapter groupListAdapter;
     private LinearLayout ll_grouplist;
+
+    /**应要求添加左上角的返回按钮*/
+    private EaseTitleBar titlebar_grouplist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,14 @@ public class GroupListActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(GroupListActivity.this,NewGroupActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //应要求添加左上角的返回键-点击事件的处理
+        titlebar_grouplist.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -138,6 +150,11 @@ public class GroupListActivity extends Activity {
         lv_grouplist.addHeaderView(headerView);
 
         ll_grouplist = (LinearLayout)headerView.findViewById(R.id.ll_grouplist);
+
+        //实例化左上角的返回键
+        titlebar_grouplist = (EaseTitleBar)findViewById(R.id.titlebar_grouplist);
+        //设置左上角返回键的图片
+        titlebar_grouplist.setLeftImageResource(R.drawable.back_button_selecter);
     }
 
     @Override

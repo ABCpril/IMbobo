@@ -20,6 +20,7 @@ import com.example.administrator.imbobo.utils.Constant;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMGroupManager;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
@@ -45,6 +46,9 @@ public class GroupDetailActivity extends Activity {
 
     /**GridView 適配器*/
     private GroupDetailAdapte groupDetailAdapte;
+
+    /**应要求添加返回键*/
+    private EaseTitleBar titlebar_groupdetail;
 
 
     /**處理 增加 和刪除群成員的業務邏輯的接口*/
@@ -183,6 +187,16 @@ public class GroupDetailActivity extends Activity {
             }
         });
         //----------------------------leon------------------------------
+
+
+        //应要求添加左上角的返回键-处理点击事件
+        titlebar_groupdetail.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     //添加群成员时有一个返回参数的跳转这里要重写这个方法
@@ -424,5 +438,7 @@ public class GroupDetailActivity extends Activity {
     private void initView(){
         gv_groupdetail = (GridView)findViewById(R.id.gv_groupdetail);
         bt_groupdetail_out = (Button)findViewById(R.id.bt_groupdetail_out);
+        titlebar_groupdetail = (EaseTitleBar)findViewById(R.id.titlebar_groupdetail);
+        titlebar_groupdetail.setLeftImageResource(R.drawable.back_button_selecter);
     }
 }

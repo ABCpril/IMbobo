@@ -12,6 +12,8 @@ import com.example.administrator.imbobo.model.Model;
 import com.example.administrator.imbobo.model.bean.UserInfo;
 import com.hyphenate.chat.EMClient;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+
 /**
  * Created by Leon on 2018/10/5
  * Functions: 欢迎界面

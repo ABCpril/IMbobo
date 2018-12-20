@@ -7,8 +7,8 @@ android {
         applicationId "com.example.administrator.imbobo"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -42,4 +42,10 @@ dependencies {
     //implementation project(':hyphenatechatsdk')
     //implementation project(':easeui')
     implementation project(':easeui')
+
+    //为了给未读的消息设置角标  https://github.com/leolin310148/ShortcutBadger
+    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
+
+    //微信分享到朋友圈的依赖
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }

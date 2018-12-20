@@ -16,6 +16,7 @@ import com.example.administrator.imbobo.model.Model;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroupManager;
 import com.hyphenate.chat.EMGroupOptions;
+import com.hyphenate.easeui.widget.EaseTitleBar;
 import com.hyphenate.exceptions.HyphenateException;
 
 /**
@@ -38,6 +39,9 @@ public class NewGroupActivity extends Activity {
 
     /**创建按钮*/
     private Button bt_newgroup_create;
+
+    /**应要求添加左上角返回键*/
+    private EaseTitleBar titlebar_newgroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,14 @@ public class NewGroupActivity extends Activity {
                 }else {
                     Toast.makeText(NewGroupActivity.this,"请设置群名称",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        //应要求添加左上角的返回按钮-点击事件的处理
+        titlebar_newgroup.setLeftLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -160,5 +172,7 @@ public class NewGroupActivity extends Activity {
         cb_newgroup_public = (CheckBox)findViewById(R.id.cb_newgroup_public);
         cb_newgroup_invite = (CheckBox)findViewById(R.id.cb_newgroup_invite);
         bt_newgroup_create = (Button)findViewById(R.id.bt_newgroup_create);
+        titlebar_newgroup = (EaseTitleBar)findViewById(R.id.titlebar_newgroup);
+        titlebar_newgroup.setLeftImageResource(R.drawable.back_button_selecter);
     }
 }
