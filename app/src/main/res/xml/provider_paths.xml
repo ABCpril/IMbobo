@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <paths>
+        <external-path path="" name="camera_photos" />
+    </paths>
+</PreferenceScreen>
+
+
+
+
+    <!--<external-path path="images" name="camera_photos" />-->
+    <!--<external-path path="images/" name="camera_photos" />-->
+
+
+    <!--<paths>-->
+    <!--<external-path-->
+    <!--name="files_root"-->
+    <!--path="Android/data/com.example.administrator.imbobo/" />-->
+    <!--<external-path-->
+    <!--name="external_storage_root"-->
+    <!--path="." />-->
+    <!--</paths>-->
