@@ -66,6 +66,14 @@ public class MainActivity extends FragmentActivity{
         }
     };
 
+    private BroadcastReceiver hideShowReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            pitchOn = false;
+            myView.setNum("0");
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +151,8 @@ public class MainActivity extends FragmentActivity{
         mLBM = LocalBroadcastManager.getInstance(MainActivity.this);
         //ContactInviteChangeReceiver - receiver
         mLBM.registerReceiver(receiverMessageReceived,new IntentFilter(Constant.MESSAGE_RECEIVED));
+        //接收广播 从对话框回来 右上角的@不要显示
+        mLBM.registerReceiver(hideShowReceiver,new IntentFilter("3.1415926"));
     }
 
     @Override
@@ -150,6 +160,7 @@ public class MainActivity extends FragmentActivity{
 
         //合理管理内存有注册有销毁
         mLBM.unregisterReceiver(receiverMessageReceived);
+        mLBM.unregisterReceiver(hideShowReceiver);
         super.onDestroy();
     }
 }

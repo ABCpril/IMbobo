@@ -736,6 +736,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     @Override
     public void onDestroy() {
 
+        //发送从聊天窗口返回的广播 - 注意： 正常情况下要定义成常量
+        mLBM.sendBroadcast(new Intent("3.1415926"));
+
         //注册的广播一定要关闭掉-合理的管理内存
         mLBM.unregisterReceiver(microphoneRegist);
 
@@ -754,7 +757,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }
     }
 
+
     public void onBackPressed() {
+
         if (inputMenu.onBackPressed()) {
             getActivity().finish();
             if(chatType == EaseConstant.CHATTYPE_GROUP){
@@ -809,6 +814,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             }
         });
     }
+
 
     // implement methods in EMMessageListener
     @Override
@@ -1172,7 +1178,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                  Intent intentToTakePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
                  //创建路径路径转文件
-                 cameraFile = new File(Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg");
+                 cameraFile = new File(PathUtil.getInstance().getImagePath(), EMClient.getInstance().getCurrentUser()
+                                     + System.currentTimeMillis() + ".jpg");
+
+                 //创建路径路径转文件
+                 //cameraFile = new File(Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg");
 
 
                  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

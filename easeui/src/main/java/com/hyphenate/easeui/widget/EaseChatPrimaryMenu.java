@@ -206,8 +206,6 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     @Override
     public void onClick(View view){
 
-
-
         int id = view.getId();
         if (id == R.id.btn_send) {
             if(listener != null){
@@ -256,7 +254,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     protected void setModeVoice() {
 
         //--------------------用户选中了发送语音------------------------------------------------------
-        //发送刚刚返出InviteActivity 红点不要再显示了的广播
+        //发送刚刚返出请求权限的广播
         mLBM.sendBroadcast(new Intent(EaseConstant.MICROPHONE));
 
         hideKeyboard();
