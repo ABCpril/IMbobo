@@ -229,7 +229,15 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                     requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             0);
 
-                    return true;
+                    return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
+
+                        @Override
+                        public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
+                            //用户没有允许权限不发消息
+                            new EaseAlertDialog(getContext(),"提示","您没有允许写入权限",R.style.dialog,null,
+                                    false).show();
+                        }
+                    });
 
                 }else {
 
@@ -244,7 +252,16 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                          */
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 3);
-                        return true;
+
+                        return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
+
+                            @Override
+                            public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
+                                //用户没有允许权限不发消息
+                                new EaseAlertDialog(getContext(),"提示","您没有允许麦克风权限",R.style.dialog,null,
+                                        false).show();
+                            }
+                        });
                     }else {
                         return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
 
