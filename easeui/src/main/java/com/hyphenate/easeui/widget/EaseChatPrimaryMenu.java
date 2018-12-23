@@ -1,6 +1,8 @@
 package com.hyphenate.easeui.widget;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.EMLog;
 
@@ -35,6 +38,11 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     private ImageView faceChecked;
     private Button buttonMore;
     private boolean ctrlPress = false;
+    private Context context;
+
+
+    /**广播*/
+    private LocalBroadcastManager mLBM;
 
     public EaseChatPrimaryMenu(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -43,10 +51,13 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
 
     public EaseChatPrimaryMenu(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        //注册邀请信息变化的广播
+        mLBM = LocalBroadcastManager.getInstance(context);
     }
 
     public EaseChatPrimaryMenu(Context context) {
         super(context);
+        this.context = context;
         init(context, null);
     }
 
@@ -194,6 +205,9 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
      */
     @Override
     public void onClick(View view){
+
+
+
         int id = view.getId();
         if (id == R.id.btn_send) {
             if(listener != null){
@@ -240,6 +254,11 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
      * 
      */
     protected void setModeVoice() {
+
+        //--------------------用户选中了发送语音------------------------------------------------------
+        //发送刚刚返出InviteActivity 红点不要再显示了的广播
+        mLBM.sendBroadcast(new Intent(EaseConstant.MICROPHONE));
+
         hideKeyboard();
         edittext_layout.setVisibility(View.GONE);
         buttonSetModeVoice.setVisibility(View.GONE);
@@ -310,5 +329,6 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     public EditText getEditText() {
         return editText;
     }
+
 
 }

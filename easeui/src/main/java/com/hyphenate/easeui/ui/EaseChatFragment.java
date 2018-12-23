@@ -3,9 +3,11 @@ package com.hyphenate.easeui.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
@@ -98,6 +101,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     protected static final int TYPING_SHOW_TIME = 5000;
 
+    private LocalBroadcastManager mLBM;
+
+
     /**
      * params to fragment
      */
@@ -144,6 +150,44 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     // "正在输入"功能的开关，打开后本设备发送消息将持续发送cmd类型消息通知对方"正在输入"
     private boolean turnOnTyping;
 
+
+    //接收到广播的处理-用户点击了切换到语音此时就要判断 写入权限和 麦克风权限
+    private BroadcastReceiver microphoneRegist = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //安卓8.0要获取 写入权限和麦克风权限
+            //判断是否允许写入权限
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                /**
+                 * 权限还没有授予，需要在这里写申请权限的代码
+                 * 第二个参数是一个字符串数组，里面是你需要申请的权限 可以设置申请多个权限
+                 * 最后一个参数是标志你这次申请的权限（应设置为常量的），该常量在onRequestPermissionsResult中使用到
+                 */
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        0);
+
+            }else {
+
+                //判断是否拥有麦克风权限
+                if(Build.VERSION.SDK_INT>=23 && ContextCompat.checkSelfPermission(getContext(),Manifest.permission.RECORD_AUDIO)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    /**
+                     * 在Fragment中申请权限，不要使用ActivityCompat.requestPermissions,
+                     * 直接使用Fragment的requestPermissions方法，否则会回调到Activity的
+                     * requestCode 以后要声明为常量static final int TAKE_PHOTO_REQUEST_CODE = 3
+                     */
+                    requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
+                            3);
+
+                }
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ease_fragment_chat, container, false);
@@ -176,8 +220,12 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
      * init view
      */
     protected void initView() {
-        // hold to record voice
-        //noinspection ConstantConditions
+
+        //注册广播
+        mLBM = LocalBroadcastManager.getInstance(getActivity());
+        mLBM.registerReceiver(microphoneRegist,new IntentFilter(EaseConstant.MICROPHONE));
+
+        //noinspection ConstantConditions - hold to record voice
         voiceRecorderView = (EaseVoiceRecorderView) getView().findViewById(R.id.voice_recorder);
 
         // message list layout
@@ -188,9 +236,12 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         listView = messageList.getListView();
 
         kickedForOfflineLayout = getView().findViewById(R.id.layout_alert_kicked_off);
+
+        //聊天信息条目 list view
         kickedForOfflineLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //用户点击了聊天信息
                 onChatRoomViewCreation();
             }
         });
@@ -234,8 +285,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                         @Override
                         public void onVoiceRecordComplete(String voiceFilePath, int voiceTimeLength) {
                             //用户没有允许权限不发消息
-                            new EaseAlertDialog(getContext(),"提示","您没有允许写入权限",R.style.dialog,null,
-                                    false).show();
+//                            new EaseAlertDialog(getContext(),"提示","您没有允许写入权限",R.style.dialog,null,
+//                                    false).show();
                         }
                     });
 
@@ -250,7 +301,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                          * 直接使用Fragment的requestPermissions方法，否则会回调到Activity的
                          * requestCode 以后要声明为常量static final int TAKE_PHOTO_REQUEST_CODE = 3
                          */
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
                                 3);
 
                         return voiceRecorderView.onPressToSpeakBtnTouch(v, event, new EaseVoiceRecorderCallback() {
@@ -684,6 +735,10 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     @Override
     public void onDestroy() {
+
+        //注册的广播一定要关闭掉-合理的管理内存
+        mLBM.unregisterReceiver(microphoneRegist);
+
         super.onDestroy();
 
         if (groupListener != null) {
@@ -1421,7 +1476,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 
     private void doNext(int requestCode, int[] grantResults) {
 
-        if (requestCode == 0){
+        if (grantResults != null && grantResults.length > 0 && requestCode == 0){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 // Permission Granted
             } else {
@@ -1431,7 +1486,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             }
         }
 
-        if (requestCode == 1) {
+        if (grantResults != null && grantResults.length > 0 && requestCode == 1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission Granted
             } else {
@@ -1441,16 +1496,17 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             }
         }
 
-        if (requestCode == 3) {
+        if (grantResults != null && grantResults.length > 0 && requestCode == 3) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission Granted
             } else {
-                // Permission Denied
+                // Permission Denied-前面有提示这里不用提示了
                 new EaseAlertDialog(getContext(),"提示","您没有允许麦克风权限",R.style.dialog,null,
                         false).show();
             }
         }
     }
+
 
 }
 

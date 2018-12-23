@@ -33,4 +33,7 @@ public class EaseConstant {
     
     public static final String EXTRA_CHAT_TYPE = "chatType";
     public static final String EXTRA_USER_ID = "userId";
+
+    /**发送点击了语音的广播获取麦克风权限*/
+    public static final String MICROPHONE  = "microphone ";
 }

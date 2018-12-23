@@ -216,6 +216,7 @@ public class EaseChatInputMenu extends LinearLayout {
 
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
+
                 if(listener != null){
                     return listener.onPressToSpeakBtnTouch(v, event);
                 }
